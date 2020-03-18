@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using WanaKanaNet.Checkers;
 using Xunit;
 
@@ -41,7 +42,14 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsJapaneseAcceptsOptionalAllowedChars()
         {
-            var isJapanese = JapaneseChecker.IsJapanese("≪偽括弧≫", "[≪≫]");
+            var isJapanese = JapaneseChecker.IsJapanese("≪偽括弧≫", '[', '≪', '≫', ']');
+            Assert.True(isJapanese);
+        }
+
+        [Fact]
+        public void IsJapaneseAcceptsOptionalAllowedCharsRegex()
+        {
+            var isJapanese = JapaneseChecker.IsJapanese("≪偽括弧≫", new Regex("[≪≫]"));
             Assert.True(isJapanese);
         }
     }
