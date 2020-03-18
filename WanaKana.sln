@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanaKana", "src\WanaKana\WanaKana.csproj", "{42FAA31F-19AE-4B91-B7EB-72CD95CEAFB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanaKanaNet", "src\WanaKana\WanaKanaNet.csproj", "{42FAA31F-19AE-4B91-B7EB-72CD95CEAFB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanaKana.Tests", "tests\WanaKana.Tests\WanaKana.Tests.csproj", "{C5902185-9F27-4170-8A7A-6532327A3959}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanaKanaNet.Tests", "tests\WanaKana.Tests\WanaKanaNet.Tests.csproj", "{C5902185-9F27-4170-8A7A-6532327A3959}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
