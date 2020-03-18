@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WanaKanaNet.Checkers
 {
-    internal static class KanaChecker
+    internal static class RomajiChecker
     {
-        public static bool IsKana(string input)
+        public static bool IsRomaji(string input, string optionalAllowedCharacters = "")
         {
             return false;
         }

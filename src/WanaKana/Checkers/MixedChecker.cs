@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace WanaKanaNet.Checkers
 {
-    internal static class JapaneseChecker
+    internal static class MixedChecker
     {
-        public static bool IsJapanese(string input, string optionalAllowedChars = "")
+        public static bool IsMixed(string input, bool passKanji = true)
         {
             return false;
         }
