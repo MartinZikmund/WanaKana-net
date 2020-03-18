@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WanaKanaNet.Characters;
 
 namespace WanaKanaNet.Checkers
 {
@@ -10,7 +11,15 @@ namespace WanaKanaNet.Checkers
     {
         public static bool IsKana(string input)
         {
-            return false;
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            if (input == string.Empty) return false;
+            return input.All(IsKana);
+        }
+
+        public static bool IsKana(char character)
+        {
+            if (SpecialCharacterCheckers.IsLongDash(character)) return true;
+            return HiraganaChecker.IsHiragana(character) || KatakanaChecker.IsKatakana(character);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using WanaKanaNet.Checkers;
 using Xunit;
 
@@ -37,7 +38,14 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsRomajiWithOptionalAllowedChars()
         {
-            var isRomaji = RomajiChecker.IsRomaji("a！b&cーd", "[！ー]");
+            var isRomaji = RomajiChecker.IsRomaji("a！b&cーd", '[', '！', 'ー', ']');
+            Assert.True(isRomaji);
+        }
+
+        [Fact]
+        public void IsRomajiWithOptionalAllowedCharsRegex()
+        {
+            var isRomaji = RomajiChecker.IsRomaji("a！b&cーd", new Regex("[！ー]"));
             Assert.True(isRomaji);
         }
     }

@@ -21,6 +21,8 @@ namespace WanaKanaNet.Characters
         public const char ProlongedSoundMark = (char)0x30fc;
         public const char KanaSlashDot = (char)0x30fb;
 
+        public static readonly UnicodeRange KanjiRange = new UnicodeRange(KanjiStart, KanjiEnd);
+
         public static readonly UnicodeRange ZenkakuNumbers = new UnicodeRange((char)0xff10, (char)0xff19);
         public static readonly UnicodeRange ZenkakuUppercase = new UnicodeRange(UppercaseZenkakuStart, UppercaseZenkakuEnd);
         public static readonly UnicodeRange ZenkakuLowercase = new UnicodeRange(LowercaseZenkakuStart, LowercaseZenkakuEnd);
