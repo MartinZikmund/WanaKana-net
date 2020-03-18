@@ -20,8 +20,8 @@ namespace WanaKanaNet.Tests.Checkers
 
         [InlineData("あ", true)]
         [InlineData("ああ", true)]
-        [InlineData("ア", true)]
-        [InlineData("A", true)]
+        [InlineData("ア", false)]
+        [InlineData("A", false)]
         [InlineData("あア", false)]
         [InlineData("げーむ", true)] //ignores long dash in hiragana
         [Theory]

@@ -9,8 +9,8 @@
         /// Initializes an instance of UnicodeRange with given bounds.
         /// </summary>
         /// <param name="start">Inclusive start of the interval.</param>
-        /// <param name="end">Exclusive end of the interval</param>
-        public UnicodeRange(int start, int end)
+        /// <param name="end">Inclusive end of the interval</param>
+        public UnicodeRange(char start, char end)
         {
             Start = start;
             End = end;
@@ -19,11 +19,16 @@
         /// <summary>
         /// Inclusive start of the interval.
         /// </summary>
-        public int Start { get; }
+        public char Start { get; }
 
         /// <summary>
-        /// Exclusive end of the interval.
+        /// Inclusive end of the interval.
         /// </summary>
-        public int End { get; }
+        public char End { get; }
+
+        public bool Contains(char character)
+        {
+            return Start <= character && character <= End;
+        }
     }
 }
