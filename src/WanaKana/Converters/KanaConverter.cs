@@ -9,10 +9,10 @@ namespace WanaKanaNet.Converters
 {
     internal static class KanaConverter
     {
-        public static string ToKana(string input, WanaKanaOptions? options = null, IReadOnlyDictionary<string, string>? customMapping = null)
+        public static string ToKana(string input, WanaKanaOptions? options = null, IReadOnlyDictionary<string, string>? map = null)
         {
             options ??= new WanaKanaOptions();
-            customMapping ??= CreateRomajiToKanaMap(options);
+            map ??= CreateRomajiToKanaMap(options);
 
             throw new NotImplementedException();
         }
@@ -35,6 +35,17 @@ namespace WanaKanaNet.Converters
 
             //return map;
             throw new NotImplementedException();
+        }
+
+        private static string SplitIntoConvertedKana(string input, WanaKanaOptions? options, IReadOnlyDictionary<string, string>? map)
+        {
+            options ??= new WanaKanaOptions();
+            if (map == null)
+            {
+                map = CreateRomajiToKanaMap(options);
+            }
+
+            return ApplyMapping(input.ToLowerInvariant(), map, options.ImeMode == ImeMode.None);
         }
     }
 }
