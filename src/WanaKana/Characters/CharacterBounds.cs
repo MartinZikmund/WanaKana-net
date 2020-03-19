@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WanaKanaNet.Characters
 {
@@ -40,6 +41,22 @@ namespace WanaKanaNet.Characters
         public static readonly UnicodeRange CjkSymbolsPunctuation = new UnicodeRange((char)0x3000, (char)0x303f);
         public static readonly UnicodeRange CommonCjk = new UnicodeRange((char)0x4e00, (char)0x9fff);
         public static readonly UnicodeRange RareCjk = new UnicodeRange((char)0x3400, (char)0x4dbf);
+
+        /// <summary>
+        /// Consonants, does not include 'y'.
+        /// </summary>
+        public static readonly HashSet<char> Consonants = new HashSet<char>()
+        {
+            'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'm', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z',
+        };
+
+        /// <summary>
+        /// Vowels, does not include 'y'.
+        /// </summary>
+        public static readonly HashSet<char> Vowels = new HashSet<char>()
+        {
+            'a', 'e', 'i', 'o', 'u',
+        };
 
         public static readonly UnicodeRange[] KanaRanges = {
             HiraganaChars, KatakanaChars, KanaPunctuation, HankakuKatakana
