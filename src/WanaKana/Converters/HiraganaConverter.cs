@@ -21,12 +21,12 @@ namespace WanaKanaNet.Converters
             if (MixedChecker.IsMixed(input))
             {
                 var convertedKatakana = KatakanaConverter.KatakanaToHiragana(input);
-                return ToKana(convertedKatakana.ToLowerInvariant(), options);
+                return KanaConverter.ToKana(convertedKatakana.ToLowerInvariant(), options);
             }
 
-            if (RomajiChecker.IsRomaji(input) || SpecialCharacterCheckers.IsEnglishPunctuation(input[0]))
+            if (RomajiChecker.IsRomaji(input) || SpecialCharacterChecker.IsEnglishPunctuation(input[0]))
             {
-                return ToKana(input.ToLowerInvariant(), options);
+                return KanaConverter.ToKana(input.ToLowerInvariant(), options);
             }
 
             return KatakanaConverter.KatakanaToHiragana(input);

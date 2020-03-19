@@ -7,7 +7,7 @@ using WanaKanaNet.Characters;
 
 namespace WanaKanaNet.Checkers
 {
-    internal static class SpecialCharacterCheckers
+    internal static class SpecialCharacterChecker
     {
         public static bool IsLongDash(char character) =>
             character == CharacterBounds.ProlongedSoundMark;

@@ -135,10 +135,5 @@ namespace WanaKanaNet.Characters
             {"fw", "ふ"},
             {"f", "ふ"},
         };
-
-        public void CreateRomajiToKanaMap()
-        {
-            var kanaTree = Transform(Basic)
-        }
     }
 }
