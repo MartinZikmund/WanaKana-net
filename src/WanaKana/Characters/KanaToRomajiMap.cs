@@ -96,7 +96,7 @@ namespace WanaKanaNet.Characters
 
         // going with the intuitive (yet incorrect) solution where っや -> yya and っぃ -> ii
         // in other words, just assume the sokuon could have been applied to anything
-        private readonly IDictionary<char, char> SokuonWhitelist = new Dictionary<char, char>()
+        private static readonly IDictionary<char, char> SokuonWhitelist = new Dictionary<char, char>()
         {
           {'b','b'},
           {'c','t'},
@@ -165,14 +165,45 @@ namespace WanaKanaNet.Characters
                 romajiTree[$"{kana}ぇ"] = $"{roma}e";
             }
 
-            romajiTree["っ"] = resolveTsu(romajiTree);
+            romajiTree.InsertSubtrie("っ", ResolveTsu(romajiTree));
+
+            foreach (var kana in AmbiguousVowels)
+            {
+                romajiTree[$"ん${kana}"] = $"n'{romajiTree[kana.ToString()]}";
+            }
+
+            // NOTE: could be re-enabled with an option?
+            // // んば -> mbo
+            // const LABIAL = [
+            //   'ば', 'び', 'ぶ', 'べ', 'ぼ',
+            //   'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
+            //   'ま', 'み', 'む', 'め', 'も',
+            // ];
+            // LABIAL.forEach((kana) => {
+            //   setTrans(`ん${kana}`, `m${subtreeOf(kana)['']}`);
+            // });
 
             return romajiTree;
         }
 
         private static Trie ResolveTsu(Trie trie)
         {
-
+            return Object.entries(tree).reduce((tsuTree, [key, value]) => {
+                if (!key)
+                {
+                    // we have reached the bottom of this branch
+                    var consonant = value[0];
+                    tsuTree[key] = SokuonWhitelist.ContainsKey(consonant)
+                      ? SokuonWhitelist[consonant] + value
+                      : value;
+                }
+                else
+                {
+                    // more subtrees
+                    tsuTree[key] = resolveTsu(value);
+                }
+                return tsuTree;
+            }, { });
         }
     }
 }

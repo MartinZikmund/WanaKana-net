@@ -2,11 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Characters
 {
-    internal static class RomajiTokanaMap
+    internal static class RomajiToKanaMap
     {
+        private static Trie? _romajiToKanaTree = null;
+
+        private static readonly IReadOnlyDictionary<string, string> BasicKunrei = new Dictionary<string, string>()
+        {
+            {"a","あ"}, {"i", "い"}, {"u","う"}, {"e","え"}, {"o", "お"},
+            {"ka", "か"}, {"ki","き"}, {"ku","く"}, {"ke","け"}, {"ko","こ"},
+            {"sa", "さ"}, {"si","し"}, {"su","す"}, {"se","せ"}, {"so","そ"},
+            {"ta", "た"}, {"ti","ち"}, {"tu","つ"}, {"te","て"}, {"to","と"},
+            {"na", "な"}, {"ni","に"}, {"nu","ぬ"}, {"ne","ね"}, {"no","の"},
+            {"ha", "は"}, {"hi","ひ"}, {"hu","ふ"}, {"he","へ"}, {"ho","ほ"},
+            {"ma", "ま"}, {"mi","み"}, {"mu","む"}, {"me","め"}, {"mo","も"},
+            {"ya", "や"}, {"yu","ゆ"}, {"yo","よ"},
+            {"ra", "ら"}, {"ri","り"}, {"ru","る"}, {"re","れ"}, {"ro","ろ"},
+            {"wa", "わ"}, {"wi","ゐ"}, {"we","ゑ"}, {"wo","を"},
+            {"ga", "が"}, {"gi","ぎ"}, {"gu","ぐ"}, {"ge","げ"}, {"go","ご"},
+            {"za", "ざ"}, {"zi","じ"}, {"zu","ず"}, {"ze","ぜ"}, {"zo","ぞ"},
+            {"da", "だ"}, {"di","ぢ"}, {"du","づ"}, {"de","で"}, {"do","ど"},
+            {"ba", "ば"}, {"bi","び"}, {"bu","ぶ"}, {"be","べ"}, {"bo","ぼ"},
+            {"pa", "ぱ"}, {"pi","ぴ"}, {"pu","ぷ"}, {"pe","ぺ"}, {"po","ぽ"},
+            {"va", "ゔぁ"}, {"vi","ゔぃ"}, {"vu","ゔ"}, {"ve","ゔぇ"}, {"vo","ゔぉ"},
+        };
+
         public static readonly IReadOnlyDictionary<char, char> SpecialSymbols = new Dictionary<char, char>()
         {
             {'.', '。'},
@@ -135,5 +158,118 @@ namespace WanaKanaNet.Characters
             {"fw", "ふ"},
             {"f", "ふ"},
         };
+
+        public static Trie GetRomajiToKanaTree() => _romajiToKanaTree ??= CreateRomajiToKanaMap();
+
+        private static Trie CreateRomajiToKanaMap()
+        {
+            string[] GetAlternatives(string input)
+            {
+                foreach (var alias in Aliases.Union(new[] { new KeyValuePair<string, string>("c", "k") }))
+                {
+                    //        ['l', 'x'].forEach((prefix) => {
+                    //    const altParentTree = subtreeOf(prefix + allExceptLast(altRoma));
+                    //    altParentTree[last(altRoma)] = subtreeOf(prefix + kunreiRoma);
+                    //});
+                }
+                throw new NotImplementedException();
+            }
+
+            var kanaTree = Trie.FromDictionary(BasicKunrei);
+
+            foreach (var consonantPair in Consonants)
+            {
+                var consonant = consonantPair.Key;
+                var yKana = consonantPair.Value;
+                foreach (var smallY in SmallY)
+                {
+                    var roma = smallY.Key;
+                    var kana = smallY.Value;
+
+                    // for example kyo -> き + ょ
+                    kanaTree[consonant + roma] = yKana + kana;
+                }
+            }
+
+            foreach (var symbolPair in SpecialSymbols)
+            {
+                kanaTree[symbolPair.Key.ToString()] = symbolPair.Value.ToString();
+            }
+
+            // things like うぃ, くぃ, etc.
+            foreach (var aiueoPair in AiueoConstructions)
+            {
+                var consonant = aiueoPair.Key;
+                var aiueoKana = aiueoPair.Value;
+                foreach (var vowelPair in SmallVowels)
+                {
+                    var vowel = vowelPair.Key;
+                    var kana = vowelPair.Value;
+                    kanaTree[consonant + vowel] = aiueoKana + kana;
+                }
+            }
+
+            // different ways to write ん
+            foreach (var nChar in new[] { "n", "n'", "xn" })
+            {
+                kanaTree[nChar] = "ん";
+            }
+
+            // c is equivalent to k, but not for chi, cha, etc. that's why we have to make a copy of k
+            kanaTree.InsertSubtrie("c", kanaTree.GetSubtrie("k").Clone());
+
+            foreach (var aliasPair in Aliases)
+            {
+                var source = aliasPair.Key;
+                var alias = aliasPair.Value;
+
+                var cut = source.Substring(0, source.Length - 1);
+                var last = source[source.Length - 1];
+                var parentTree = kanaTree.GetSubtrie(cut);
+                parentTree.InsertSubtrie(last.ToString(), kanaTree.GetSubtrie(alias).Clone());
+            }
+
+            foreach (var smallLetterPair in SmallLetters)
+            {
+                var kunreiRoma = smallLetterPair.Key;
+                var kana = smallLetterPair.Value;
+                var xRoma = $"x{kunreiRoma}";
+                var xSubtree = kanaTree.GetSubtrie(xRoma);
+                xSubtree.Root.Value = kana;
+
+                // ltu -> xtu -> っ
+                var parentTree = kanaTree.GetSubtrie($"{kunreiRoma.Substring(kunreiRoma.Length - 1)}");
+                parentTree.InsertSubtrie(kunreiRoma[kunreiRoma.Length - 1].ToString(), xSubtree);
+
+                // ltsu -> ltu -> っ
+                var alternatives = GetAlternatives(kunreiRoma);
+                foreach (var alternative in alternatives)
+                {
+                    foreach (var prefix in new char[] { 'l', 'x' })
+                    {
+                        var altParentTree = kanaTree.GetSubtrie(prefix + alternative);
+                        altParentTree.InsertSubtrie(alternative[alternative.Length - 1].ToString(), kanaTree.GetSubtrie(prefix + kunreiRoma));
+                    }
+                }
+            }
+
+            foreach (var specialCase in SpecialCases)
+            {
+                kanaTree[specialCase.Key] = specialCase.Value;
+            }
+
+            Trie AddTsu(Trie tree)
+            {
+                throw new NotImplementedException();
+            }
+
+            foreach (var consonant in Consonants.Keys.Union(new[] { 'c', 'y', 'w', 'j' }))
+            {
+                var subtree = kanaTree.GetSubtrie(consonant.ToString());
+                subtree.InsertSubtrie(consonant.ToString(), AddTsu(subtree));
+            }
+
+            return kanaTree;
+        }
     }
 }

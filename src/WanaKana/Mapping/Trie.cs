@@ -24,7 +24,7 @@ namespace WanaKanaNet.Mapping
             var trie = new Trie();
             foreach (var pair in dictionary)
             {
-                trie[Key] = Value;
+                trie[pair.Key] = pair.Value;
             }
             return trie;
         }
@@ -79,6 +79,21 @@ namespace WanaKanaNet.Mapping
                 currentNode = nextNode;
             }
             return currentNode;
+        }
+
+        internal void InsertSubtrie(string prefix, Trie trie)
+        {
+            
+        }
+
+        internal Trie GetSubtrie(string key)
+        {
+            return null;
+        }
+
+        internal Trie Clone()
+        {
+            return null;
         }
     }
 }
