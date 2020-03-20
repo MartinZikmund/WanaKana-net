@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Characters
 {
     public class KanaToRomajiMap
     {
+        private static Trie? _kanaToHepburnMap = null;
+
         private static readonly IReadOnlyDictionary<string, string> BasicRomaji = new Dictionary<string, string>
         {
           {"あ","a"},{"い","i"},{"う","u"},{"え","e"},{"お","o"},
@@ -70,7 +74,7 @@ namespace WanaKanaNet.Characters
 
         private static readonly char[] YoonKana = { 'き', 'に', 'ひ', 'み', 'り', 'ぎ', 'び', 'ぴ', 'ゔ', 'く', 'ふ' };
 
-        private static readonly IDictionary<string, string> YoonExceptions_EXCEPTIONS = new Dictionary<string, string>() {
+        private static readonly IDictionary<string, string> YoonExceptions = new Dictionary<string, string>() {
             {"し","sh"},
             {"ち","ch"},
             {"じ","j"},
@@ -112,6 +116,63 @@ namespace WanaKanaNet.Characters
           {'w','w'},
           {'x','x'},
           {'z','z' },
-        };        
+        };
+
+        private Trie GetKanaToHepburnTree() => _kanaToHepburnMap ??= CreateKanaToHepburnMap();
+
+        private Trie CreateKanaToHepburnMap()
+        {
+            var romajiTree = Trie.FromDictionary(BasicRomaji);
+
+            foreach (var symbol in SpecialSymbols)
+            {
+                romajiTree[symbol.Key.ToString()] = symbol.Value.ToString();
+            }
+
+            foreach (var y in SmallY)
+            {
+                romajiTree[y.Key] = y.Value;
+            }
+
+            foreach (var aiueo in SmallAiueo)
+            {
+                romajiTree[aiueo.Key.ToString()] = aiueo.Value.ToString();
+            }
+
+            // きゃ -> kya
+            foreach (var yoonKana in YoonKana)
+            {
+                var firstRomajiChar = romajiTree[yoonKana.ToString()]![0];
+                foreach (var y in SmallY)
+                {
+                    romajiTree[yoonKana + y.Key] = firstRomajiChar + y.Value;
+                }
+            }
+
+            foreach (var yoonException in YoonExceptions)
+            {
+                var kana = yoonException.Key;
+                var roma = yoonException.Value;
+                // じゃ -> ja
+                foreach (var y in SmallY)
+                {
+                    var yKana = y.Key;
+                    var yRoma = y.Value;
+                    romajiTree[kana + yKana] = roma + yRoma[1];
+                }
+                // じぃ -> jyi, じぇ -> je
+                romajiTree[$"{kana}ぃ"] = $"{roma}yi";
+                romajiTree[$"{kana}ぇ"] = $"{roma}e";
+            }
+
+            romajiTree["っ"] = resolveTsu(romajiTree);
+
+            return romajiTree;
+        }
+
+        private static Trie ResolveTsu(Trie trie)
+        {
+
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace WanaKanaNet.Converters
             { 'o', 'う' },
         };
 
-        public static string KatakanaToHiragana(string input, bool toRomaji, bool isDestinationRomaji)
+        public static string KatakanaToHiragana(string input, bool isDestinationRomaji = false)
         {
             if (input is null)
             {

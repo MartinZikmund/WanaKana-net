@@ -6,29 +6,29 @@ using System.Threading.Tasks;
 
 namespace WanaKanaNet.Mapping
 {
-    public class TrieNode<TKey, TValue>
+    public class TrieNode
     {
-        private readonly Dictionary<TKey, TrieNode<TKey, TValue>> _children = 
-            new Dictionary<TKey, TrieNode<TKey, TValue>>();
+        private readonly Dictionary<char, TrieNode> _children =
+            new Dictionary<char, TrieNode>();
 
-        public TrieNode(TKey key, TValue value, TrieNode<TKey, TValue>? parent = null)
+        public TrieNode(char key, string? value, TrieNode? parent = null)
         {
             Key = key;
             Value = value;
             Parent = parent;
         }
 
-        public TrieNode<TKey, TValue>? Parent { get; }
+        public TrieNode? Parent { get; }
 
-        public TKey Key { get; }
+        public char Key { get; }
 
-        public TValue Value { get; }
+        public string? Value { get; set; }
 
-        public IReadOnlyDictionary<TKey, TrieNode<TKey, TValue>> Children => _children;
+        public IReadOnlyDictionary<char, TrieNode> Children => _children;
 
-        public void Accept(ITrieVisitor<TKey, TValue> visitor)
+        public TrieNode AddChild(char key, string? value = null)
         {
-            visitor.Visit(this);
+            return (_children[key] = new TrieNode(key, value, this));
         }
     }
 }

@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Characters
 {
-    internal class KanaMapping
+    internal static class KanaMapping
     {
-        public void ApplyMapping(string input, IDictionary<string, string> mapping, bool convertEnding)
+        public static void ApplyMapping(string input, IDictionary<string, string> mapping, bool convertEnding)
         {
             var root = mapping;
         }
+
+
+
+
     }
 }
