@@ -6,7 +6,7 @@ using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Characters
 {
-    internal static class RomajiToKanaMap
+    internal static class RomajiToanaMap
     {
         private static Trie? _romajiToKanaTree = null;
 
