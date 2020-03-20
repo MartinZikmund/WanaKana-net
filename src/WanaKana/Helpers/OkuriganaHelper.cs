@@ -11,8 +11,13 @@ namespace WanaKanaNet.Helpers
 {
     internal static class OkuriganaHelper
     {
-        public string StripOkurigana(string input, bool isLeading = false, string matchKanji = "")
+        public static string StripOkurigana(string input, bool isLeading = false, params char[] matchKanji)
         {
+            if (matchKanji is null)
+            {
+                throw new ArgumentNullException(nameof(matchKanji));
+            }
+            
             if (
                 !JapaneseChecker.IsJapanese(input) ||
                 IsLeadingWithoutInitialKana(input, isLeading) ||
@@ -22,9 +27,11 @@ namespace WanaKanaNet.Helpers
                 return input;
             }
 
-            var chars = matchKanji != null ? matchKanji : input;
+            var chars = matchKanji.Length != 0 ? string.Join(string.Empty, matchKanji) : input;
+            var tokenized = Tokenizer.Tokenize(chars);
             var okuriganaRegex = new Regex(
-                isLeading ? $"^{Tokenizer.Tokenize(chars)}" : $"{Tokenizer.Tokenize(chars).Pop()}$";
+                isLeading ? $"^{tokenized[0].Content}" : $"{tokenized[tokenized.Length - 1].Content}$");
+            return okuriganaRegex.Replace(input, string.Empty);
         }
 
         private static bool IsLeadingWithoutInitialKana(string input, bool isLeading) =>
@@ -33,8 +40,8 @@ namespace WanaKanaNet.Helpers
         private static bool IsTrailingWithoutFinalKana(string input, bool isLeading) =>
             !isLeading && !KanaChecker.IsKana(input[input.Length - 1]);
 
-        private static bool IsInvalidMatcher(string input, string matchKanji) =>
-            (matchKanji?.Length > 0 && matchKanji.Any(KanjiChecker.IsKanji)) ||
-            ((matchKanji?.Length ?? 0) == 0 && KanaChecker.IsKana(input));
+        private static bool IsInvalidMatcher(string input, params char[] matchKanji) =>
+            (matchKanji.Length > 0 && !matchKanji.Any(KanjiChecker.IsKanji)) ||
+            (matchKanji.Length == 0 && KanaChecker.IsKana(input));
     }
 }
