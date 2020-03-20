@@ -45,7 +45,8 @@ namespace WanaKanaNet.Converters
                 map = CreateRomajiToKanaMap(options);
             }
 
-            return ApplyMapping(input.ToLowerInvariant(), map, options.ImeMode == ImeMode.None);
+            //return ApplyMapping(input.ToLowerInvariant(), map, options.ImeMode == ImeMode.None);
+            throw new NotImplementedException();
         }
     }
 }

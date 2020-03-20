@@ -25,5 +25,10 @@ namespace WanaKanaNet.Mapping
         public TValue Value { get; }
 
         public IReadOnlyDictionary<TKey, TrieNode<TKey, TValue>> Children => _children;
+
+        public void Accept(ITrieVisitor<TKey, TValue> visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using WanaKanaNet.Characters;
 using WanaKanaNet.Checkers;
 
 namespace WanaKanaNet.Converters
@@ -34,7 +31,33 @@ namespace WanaKanaNet.Converters
 
         public static string HiraganaToKatakana(string input)
         {
-            return string.Empty;
+            if (input is null)
+            {
+                throw new System.ArgumentNullException(nameof(input));
+            }
+
+            var builder = new StringBuilder();
+            foreach (var character in input)
+            {
+                // Short circuit to avoid incorrect codeshift for 'ー' and '・'
+                if (SpecialCharacterChecker.IsLongDash(character) || SpecialCharacterChecker.IsSlashDot(character))
+                {
+                    builder.Append(character);
+                }
+                else if (HiraganaChecker.IsHiragana(character))
+                {
+                    // Shift charcode.
+                    var katakanaCode = (character - CharacterBounds.HiraganaStart) + CharacterBounds.KatakanaStart;
+                    var katakanaCharacter = (char)katakanaCode;
+                    builder.Append(katakanaCharacter);
+                }
+                else
+                {
+                    // Pass non-hiragana chars through
+                    builder.Append(character);
+                }
+            }
+            return builder.ToString();
         }
     }
 }

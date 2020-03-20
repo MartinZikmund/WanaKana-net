@@ -89,5 +89,20 @@ namespace WanaKanaNet.Tests.Converters
             var result = HiraganaConverter.ToHiragana("#22 ２２漢字、toukyou, オオサカ");
             Assert.Equal("#22 ２２漢字、とうきょう、 おおさか", result, StringComparer.InvariantCulture);
         }
+
+
+        [Fact]
+        public void HiraganaToKatakanaNullThrows()
+        {
+            Assert.Throws<ArgumentNullException>(() => HiraganaConverter.HiraganaToKatakana(null));
+        }
+
+        [InlineData("あはべか", "アハベカ")]
+        [InlineData("ぱぺぷれ", "パペプレ")]
+        [Theory]
+        public void HiraganaToKatakanaSamples(string input, string expectedResult)
+        {
+            Assert.Equal(expectedResult, HiraganaConverter.HiraganaToKatakana(input));
+        }
     }
 }

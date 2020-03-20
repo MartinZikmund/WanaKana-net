@@ -12,7 +12,10 @@ namespace WanaKanaNet.Mapping
         {
             var trie = new Trie<TKey, TValue>();
             var root = trie.Root;
-            return trie;         
-        }        
+
+
+
+            return trie;
+        }
     }
 }
