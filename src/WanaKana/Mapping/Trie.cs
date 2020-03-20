@@ -53,6 +53,14 @@ namespace WanaKanaNet.Mapping
             currentNode.Value = value;
         }
 
+        internal void AddRange(IDictionary<string, string> customRomajiMapping)
+        {
+            foreach(var entry in customRomajiMapping)
+            {
+                this[entry.Key] = entry.Value;
+            }
+        }
+
         public string? this[string key]
         {
             get => GetValue(key);

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using WanaKanaNet.Characters;
 using WanaKanaNet.Checkers;
 using WanaKanaNet.Helpers;
+using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Converters
 {
@@ -26,24 +28,19 @@ namespace WanaKanaNet.Converters
             }
             return builder.ToString();
         }
-
-        private static IDictionary<string, string> customMapping = null;
         
         private static SplitToken[] SplitIntoRomaji(string input, WanaKanaOptions options)
         {
-            //var map = GetKanaToRomajiTree(options);
+            var map = KanaToRomajiMap.GetKanaToRomajiTree(options);
 
-            //if (options.customRomajiMapping)
-            //{
-            //    if (customMapping == null)
-            //    {
-            //        customMapping = mergeCustomMapping(map, options.customRomajiMapping);
-            //    }
-            //    map = customMapping;
-            //}
+            if (options.CustomRomajiMapping != null)
+            {
 
-            //return applyMapping(katakanaToHiragana(input, toRomaji, true), map, !options.IMEMode);
-            throw new NotImplementedException();
+                map = map.Clone();
+                map.AddRange(options.CustomRomajiMapping);                
+            }
+
+            return TrieHelpers.ApplyTrie(KatakanaConverter.KatakanaToHiragana(input, true), map, options.ImeMode == Enums.ImeMode.None);
         }
     }
 }

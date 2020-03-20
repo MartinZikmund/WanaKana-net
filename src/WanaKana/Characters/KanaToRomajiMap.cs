@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WanaKanaNet.Enums;
 using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Characters
@@ -118,9 +119,20 @@ namespace WanaKanaNet.Characters
           {'z','z' },
         };
 
-        private Trie GetKanaToHepburnTree() => _kanaToHepburnMap ??= CreateKanaToHepburnMap();
+        public static Trie GetKanaToRomajiTree(WanaKanaOptions options)
+        {
+            switch (options.Romanization)
+            {
+                case RomanizationMap.Hepburn:
+                    return GetKanaToHepburnTree();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(options), "This type of romanization is not supported");
+            }
+        }
 
-        private Trie CreateKanaToHepburnMap()
+        private static Trie GetKanaToHepburnTree() => _kanaToHepburnMap ??= CreateKanaToHepburnMap();
+
+        private static Trie CreateKanaToHepburnMap()
         {
             var romajiTree = Trie.FromDictionary(BasicRomaji);
 
