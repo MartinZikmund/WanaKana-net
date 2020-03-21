@@ -31,6 +31,11 @@ namespace WanaKanaNet.Mapping
             return (_children[key] = node);
         }
 
+        internal void DeleteChild(char key)
+        {
+            _children.Remove(key);
+        }
+
         public TrieNode AddChild(char key, string? value = null)
         {
             return (_children[key] = new TrieNode(key, value, this));

@@ -73,24 +73,24 @@ namespace WanaKanaNet.Mapping
                         // nothing more to consume, just commit the last chunk and return it
                         // so as to not have an empty element at the end of the result
                         return tree.Value != null ?
-                            new[] { new SplitToken(tree.Value, lastCursor, currentCursor) } :
+                            new[] { new SplitToken(lastCursor, currentCursor, tree.Value) } :
                             Array.Empty<SplitToken>();
                     }
                     // if we don't want to convert the ending, because there are still possible continuations
                     // return null as the final node value
-                    return new[] { new SplitToken(null, lastCursor, currentCursor) };
+                    return new[] { new SplitToken(lastCursor, currentCursor, null) };
                 }
 
                 if (tree.Children.Count == 0)
                 {
-                    return new[] { new SplitToken(tree.Value, lastCursor, currentCursor) }.Concat(NewChunk(remaining, currentCursor)).ToArray();
+                    return new[] { new SplitToken(lastCursor, currentCursor, tree.Value) }.Concat(NewChunk(remaining, currentCursor)).ToArray();
                 }
 
                 var subtree = GetNextSubtree(tree, remaining[0]);
 
                 if (subtree == null)
                 {
-                    return new[] { new SplitToken(tree.Value ?? input.Substring(lastCursor, currentCursor - lastCursor), lastCursor, currentCursor) }.Concat(NewChunk(remaining, currentCursor)).ToArray();
+                    return new[] { new SplitToken(lastCursor, currentCursor, tree.Value ?? input.Substring(lastCursor, currentCursor - lastCursor)) }.Concat(NewChunk(remaining, currentCursor)).ToArray();
                 }
                 // continue current branch
                 return Parse(subtree, remaining.Substring(1), lastCursor, currentCursor + 1);

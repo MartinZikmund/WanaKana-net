@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using WanaKanaNet.Characters;
+using WanaKanaNet.Checkers;
 using WanaKanaNet.Enums;
 using WanaKanaNet.Helpers;
 using WanaKanaNet.Mapping;
@@ -14,7 +16,15 @@ namespace WanaKanaNet.Converters
     {
         public static string ToKana(string input, WanaKanaOptions? options = null, IReadOnlyDictionary<string, string>? map = null)
         {
+            if (input is null)
+            {
+                throw new System.ArgumentNullException(nameof(input));
+            }
+
             options ??= new WanaKanaOptions();
+
+            if (input.Length == 0) return string.Empty;
+
             Trie trie;
             if (map == null)
             {
@@ -25,7 +35,21 @@ namespace WanaKanaNet.Converters
                 throw new NotImplementedException();
             }
 
-            return string.Join(string.Empty, SplitIntoConvertedKana(input, options, trie).Select(s => s.Content));
+            var tokens = SplitIntoConvertedKana(input, options, trie);
+            var builder = new StringBuilder();
+            foreach (var token in tokens)
+            {
+                var (start, end, kana) = token;
+                if (kana == null)
+                {
+                    // haven't converted the end of the string, since we are in IME mode
+                    builder.Append(input.Substring(start));
+                }
+                var enforceHiragana = options.ImeMode == ImeMode.ToHiragana;
+                var enforceKatakana = options.ImeMode == ImeMode.ToKatakana || input.Substring(start,end - start).All(char.IsUpper);
+                builder.Append(enforceHiragana || !enforceKatakana ? kana : HiraganaConverter.HiraganaToKatakana(kana));
+            }
+            return builder.ToString();
         }
 
         private static Trie CreateRomajiToKanaMap(WanaKanaOptions options)

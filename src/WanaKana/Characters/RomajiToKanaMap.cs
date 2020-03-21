@@ -250,7 +250,7 @@ namespace WanaKanaNet.Characters
                 {
                     foreach (var prefix in new char[] { 'l', 'x' })
                     {
-                        var altParentTree = kanaTree.GetSubtrie(prefix + alternative);
+                        var altParentTree = kanaTree.GetSubtrie(prefix + alternative.Substring(0, alternative.Length - 1));
                         altParentTree.AssignSubtrie(alternative[alternative.Length - 1].ToString(), kanaTree.GetSubtrie(prefix + kunreiRoma));
                     }
                 }
@@ -272,11 +272,15 @@ namespace WanaKanaNet.Characters
                 return tsuTrie;
             }
 
+            // have to explicitly name c here, because we made it a copy of k, not a reference
             foreach (var consonant in Consonants.Keys.Union(new[] { 'c', 'y', 'w', 'j' }))
             {
                 var subtree = kanaTree.GetSubtrie(consonant.ToString());
                 subtree.InsertSubtrie(consonant.ToString(), AddTsu(subtree));
             }
+
+            // nn should not be っん
+            kanaTree.GetSubtrie("n").Root.DeleteChild('n');
 
             return kanaTree;
         }

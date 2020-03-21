@@ -8,20 +8,20 @@ namespace WanaKanaNet.Helpers
 {
     public struct SplitToken
     {
-        public SplitToken(string content, int start, int end)
+        public SplitToken(int start, int end, string content)
         {
-            Content = content;
             Start = start;
             End = end;
+            Content = content;
         }
 
         public void Deconstruct(out int start, out int end, out string content) =>
             (start, end, content) = (Start, End, Content);
 
-        public string Content { get; }
-
         public int Start { get; }
 
         public int End { get; }
+
+        public string Content { get; }
     }
 }
