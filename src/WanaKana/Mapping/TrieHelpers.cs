@@ -19,16 +19,6 @@ namespace WanaKanaNet.Mapping
                 {
                     return null;
                 }
-                // if the next child node does not have a node value, set its node value to the input
-                //if (child.Value == null)
-                //{
-                //    var fixedChild = new TrieNode(child.Key, node.Value + nextChar, node.Parent);
-                //    foreach (var nestedChild in child.Children)
-                //    {
-                //        fixedChild.AddChild(nestedChild.Key, nestedChild.Value);
-                //    }
-                //    return fixedChild;
-                //}
                 return child;
             }
 
@@ -49,21 +39,6 @@ namespace WanaKanaNet.Mapping
                 );
             }
 
-            TrieNode FixUpValue(TrieNode node, string value)
-            {
-                if (node.Value == null)
-                {
-                    var fixedChild = new TrieNode(node.Key, value, node.Parent);
-                    foreach (var nestedChild in node.Children)
-                    {
-                        fixedChild.AddChild(nestedChild.Key, nestedChild.Value);
-                    }
-                    return fixedChild;
-                }
-
-                return node;
-            }
-
             SplitToken[] Parse(TrieNode tree, string remaining, int lastCursor, int currentCursor)
             {
                 if (string.IsNullOrEmpty(remaining))
@@ -72,9 +47,7 @@ namespace WanaKanaNet.Mapping
                     {
                         // nothing more to consume, just commit the last chunk and return it
                         // so as to not have an empty element at the end of the result
-                        return tree.Value != null ?
-                            new[] { new SplitToken(lastCursor, currentCursor, tree.Value) } :
-                            Array.Empty<SplitToken>();
+                        return new[] { new SplitToken(lastCursor, currentCursor, tree.Value) };
                     }
                     // if we don't want to convert the ending, because there are still possible continuations
                     // return null as the final node value
