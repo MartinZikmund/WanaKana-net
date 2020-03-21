@@ -20,7 +20,7 @@ steps:
   displayName: 'Pack'
   inputs:
     command: 'pack'    
-    packagesToPack: 'src/WanaKana/WanaKana.csproj'
+    packagesToPack: 'src/WanaKanaNet/WanaKanaNet.csproj'
     nobuild: true
     includesymbols: true    
     versioningScheme: 'off'
