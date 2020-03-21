@@ -118,6 +118,16 @@ namespace WanaKanaNet.Mapping
             }
         }
 
+        internal void AssignSubtrie(string prefix, Trie trie)
+        {
+            var node = GetNode(prefix, true);            
+            node.Value = trie.Root.Value;
+            foreach (var child in trie.Root.Children)
+            {
+                node!.AddChild(child.Key, child.Value);
+            }
+        }
+
         internal Trie GetSubtrie(string key)
         {
             return new Trie(GetNode(key, true)!);
@@ -126,7 +136,7 @@ namespace WanaKanaNet.Mapping
         internal Trie Clone()
         {
             void InDepth(TrieNode target, TrieNode source)
-            {
+            {                
                 target.Value = source.Value;
                 foreach (var sourceChild in source.Children)
                 {
@@ -134,7 +144,7 @@ namespace WanaKanaNet.Mapping
                     InDepth(targetNode, sourceChild.Value);
                 }
             }
-            var trie = new Trie();
+            var trie = new Trie(new TrieNode(Root.Key, Root.Value));
             InDepth(trie.Root, Root);
             return trie;
         }

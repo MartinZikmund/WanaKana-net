@@ -229,7 +229,7 @@ namespace WanaKanaNet.Characters
                 var cut = source.Substring(0, source.Length - 1);
                 var last = source[source.Length - 1];
                 var parentTree = kanaTree.GetSubtrie(cut);
-                parentTree.InsertSubtrie(last.ToString(), kanaTree.GetSubtrie(alias).Clone());
+                parentTree.AssignSubtrie(last.ToString(), kanaTree.GetSubtrie(alias).Clone());
             }
 
             foreach (var smallLetterPair in SmallLetters)

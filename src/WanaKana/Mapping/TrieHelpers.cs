@@ -20,8 +20,16 @@ namespace WanaKanaNet.Mapping
                     return null;
                 }
                 // if the next child node does not have a node value, set its node value to the input
-                //node.Children[nextChar].Value = node.Value != null ? node.Value + nextChar : null;
-                return node.Children[nextChar];
+                //if (child.Value == null)
+                //{
+                //    var fixedChild = new TrieNode(child.Key, node.Value + nextChar, node.Parent);
+                //    foreach (var nestedChild in child.Children)
+                //    {
+                //        fixedChild.AddChild(nestedChild.Key, nestedChild.Value);
+                //    }
+                //    return fixedChild;
+                //}
+                return child;
             }
 
             SplitToken[] NewChunk(string remaining, int currentCursor)
@@ -30,18 +38,33 @@ namespace WanaKanaNet.Mapping
                 var firstChar = remaining[0];
 
                 return Parse(
-                    /*{ '': firstChar }, */root.Children[firstChar],
+                    root.Children[firstChar],
                     remaining.Substring(1),
                     currentCursor,
                     currentCursor + 1
                 );
             }
 
+            TrieNode FixUpValue(TrieNode node, string value)
+            {
+                if (node.Value == null)
+                {
+                    var fixedChild = new TrieNode(node.Key, value, node.Parent);
+                    foreach (var nestedChild in node.Children)
+                    {
+                        fixedChild.AddChild(nestedChild.Key, nestedChild.Value);
+                    }
+                    return fixedChild;
+                }
+
+                return node;
+            }
+
             SplitToken[] Parse(TrieNode tree, string remaining, int lastCursor, int currentCursor)
             {
                 if (string.IsNullOrEmpty(remaining))
                 {
-                    if (convertEnding || tree.Value != null)
+                    if (convertEnding || tree.Children.Count == 0)
                     {
                         // nothing more to consume, just commit the last chunk and return it
                         // so as to not have an empty element at the end of the result
@@ -54,7 +77,7 @@ namespace WanaKanaNet.Mapping
                     return new[] { new SplitToken(null, lastCursor, currentCursor) };
                 }
 
-                if (tree.Value != null)
+                if (tree.Children.Count == 0)
                 {
                     return new[] { new SplitToken(tree.Value, lastCursor, currentCursor) }.Concat(NewChunk(remaining, currentCursor)).ToArray();
                 }
