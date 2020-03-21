@@ -37,8 +37,12 @@ namespace WanaKanaNet.Mapping
                 // start parsing a new chunk
                 var firstChar = remaining[0];
 
+                if (!root.Children.TryGetValue(firstChar, out var child))
+                {
+                    child = new TrieNode(firstChar, firstChar.ToString());
+                }
                 return Parse(
-                    root.Children[firstChar],
+                    child,
                     remaining.Substring(1),
                     currentCursor,
                     currentCursor + 1
@@ -86,7 +90,7 @@ namespace WanaKanaNet.Mapping
 
                 if (subtree == null)
                 {
-                    return new[] { new SplitToken(tree.Value, lastCursor, currentCursor) }.Concat(NewChunk(remaining, currentCursor)).ToArray();
+                    return new[] { new SplitToken(tree.Value ?? input.Substring(lastCursor, currentCursor - lastCursor), lastCursor, currentCursor) }.Concat(NewChunk(remaining, currentCursor)).ToArray();
                 }
                 // continue current branch
                 return Parse(subtree, remaining.Substring(1), lastCursor, currentCursor + 1);

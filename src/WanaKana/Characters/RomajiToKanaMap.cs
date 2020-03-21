@@ -241,8 +241,8 @@ namespace WanaKanaNet.Characters
                 xSubtree.Root.Value = kana;
 
                 // ltu -> xtu -> っ
-                var parentTree = kanaTree.GetSubtrie($"{kunreiRoma.Substring(kunreiRoma.Length - 1)}");
-                parentTree.InsertSubtrie(kunreiRoma[kunreiRoma.Length - 1].ToString(), xSubtree);
+                var parentTree = kanaTree.GetSubtrie($"l{kunreiRoma.Substring(0, kunreiRoma.Length - 1)}");
+                parentTree.AssignSubtrie(kunreiRoma[kunreiRoma.Length - 1].ToString(), xSubtree);
 
                 // ltsu -> ltu -> っ
                 var alternatives = GetAlternatives(kunreiRoma);
@@ -251,7 +251,7 @@ namespace WanaKanaNet.Characters
                     foreach (var prefix in new char[] { 'l', 'x' })
                     {
                         var altParentTree = kanaTree.GetSubtrie(prefix + alternative);
-                        altParentTree.InsertSubtrie(alternative[alternative.Length - 1].ToString(), kanaTree.GetSubtrie(prefix + kunreiRoma));
+                        altParentTree.AssignSubtrie(alternative[alternative.Length - 1].ToString(), kanaTree.GetSubtrie(prefix + kunreiRoma));
                     }
                 }
             }

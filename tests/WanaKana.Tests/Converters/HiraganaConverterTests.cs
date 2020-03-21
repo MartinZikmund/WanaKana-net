@@ -37,12 +37,11 @@ namespace WanaKanaNet.Tests.Converters
             Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
         }
 
-        [InlineData("wi", "うぃ")]
         [InlineData("NLTU", "んっ")]
         [Theory]
-        public void ToHiraganaNotUsingObsoleteKana(string input, string expectedResult)
+        public void ToHiraganaNltu(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input), StringComparer.InvariantCulture);
+            Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
         }
 
         [InlineData("wi", "うぃ")]
@@ -76,7 +75,7 @@ namespace WanaKanaNet.Tests.Converters
         }
 
         [InlineData("スーパー", "すうぱあ")]
-        [InlineData("バンゴー", "ばんご")]
+        [InlineData("バンゴー", "ばんごう")]
         [Theory]
         public void ToHiraganaKatakanaChoonpu(string input, string expectedResult)
         {
