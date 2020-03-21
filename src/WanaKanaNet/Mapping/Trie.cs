@@ -121,7 +121,7 @@ namespace WanaKanaNet.Mapping
         internal void AssignSubtrie(string prefix, Trie trie)
         {
             var node = GetNode(prefix, true);            
-            node.Value = trie.Root.Value;
+            node!.Value = trie.Root.Value;
             foreach (var child in trie.Root.Children)
             {
                 node!.AddChild(child.Key, child.Value);

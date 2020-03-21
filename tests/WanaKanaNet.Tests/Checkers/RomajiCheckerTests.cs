@@ -10,7 +10,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => WanaKana.IsRomaji(null));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.IsRomaji(null!));
         }
 
         [Fact]

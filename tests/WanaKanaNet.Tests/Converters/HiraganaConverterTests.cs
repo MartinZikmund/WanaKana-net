@@ -93,7 +93,7 @@ namespace WanaKanaNet.Tests.Converters
         [Fact]
         public void HiraganaToKatakanaNullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => KanaConverters.HiraganaToKatakana(null));
+            Assert.Throws<ArgumentNullException>(() => KanaConverters.HiraganaToKatakana(null!));
         }
 
         [InlineData("あはべか", "アハベカ")]
