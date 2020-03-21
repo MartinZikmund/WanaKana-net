@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using WanaKanaNet.Enums;
+﻿using System.Collections.Generic;
 
 namespace WanaKanaNet
 {
@@ -41,7 +39,7 @@ namespace WanaKanaNet
         /// <summary>
         /// Choose ToRomaji() romanization map (currently only 'Hepburn').
         /// </summary>
-        public RomanizationMap Romanization { get; set; } = RomanizationMap.Hepburn;
+        public RomanizationType Romanization { get; set; } = RomanizationType.Hepburn;
 
         /// <summary>
         /// Custom map will be merged with default conversion.

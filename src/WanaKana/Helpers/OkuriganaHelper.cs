@@ -9,7 +9,7 @@ using WanaKanaNet.Checkers;
 
 namespace WanaKanaNet.Helpers
 {
-    internal static class OkuriganaHelper
+    internal static class OkuriganaHelpers
     {
         public static string StripOkurigana(string input, bool isLeading = false, params char[] matchKanji)
         {

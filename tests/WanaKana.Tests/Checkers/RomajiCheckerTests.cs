@@ -10,13 +10,13 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => RomajiChecker.IsRomaji(null));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.IsRomaji(null));
         }
 
         [Fact]
         public void EmptyReturnsFalse()
         {
-            Assert.False(RomajiChecker.IsRomaji(string.Empty));
+            Assert.False(WanaKana.IsRomaji(string.Empty));
         }
 
         [InlineData("A", true)]
@@ -32,20 +32,20 @@ namespace WanaKanaNet.Tests.Checkers
         [Theory]
         public void IsRomajiResponsesMatch(string input, bool expectedResult)
         {
-            Assert.Equal(expectedResult, RomajiChecker.IsRomaji(input));
+            Assert.Equal(expectedResult, WanaKana.IsRomaji(input));
         }
 
         [Fact]
         public void IsRomajiWithOptionalAllowedChars()
         {
-            var isRomaji = RomajiChecker.IsRomaji("a！b&cーd", '[', '！', 'ー', ']');
+            var isRomaji = WanaKana.IsRomaji("a！b&cーd", '[', '！', 'ー', ']');
             Assert.True(isRomaji);
         }
 
         [Fact]
         public void IsRomajiWithOptionalAllowedCharsRegex()
         {
-            var isRomaji = RomajiChecker.IsRomaji("a！b&cーd", new Regex("[！ー]"));
+            var isRomaji = WanaKana.IsRomaji("a！b&cーd", new Regex("[！ー]"));
             Assert.True(isRomaji);
         }
     }

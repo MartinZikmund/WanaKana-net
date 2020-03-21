@@ -13,7 +13,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Fact]
         public void EmptyInput()
         {
-            Assert.Equal(string.Empty, OkuriganaHelper.StripOkurigana(string.Empty));
+            Assert.Equal(string.Empty, OkuriganaHelpers.StripOkurigana(string.Empty));
         }
 
         [InlineData("ふふフフ", "ふふフフ")]
@@ -22,7 +22,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Theory]
         public void BasicInputs(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, OkuriganaHelper.StripOkurigana(input));
+            Assert.Equal(expectedResult, OkuriganaHelpers.StripOkurigana(input));
         }
 
         [InlineData("踏み込む", "踏み込")]
@@ -33,7 +33,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Theory]
         public void DefaultParameters(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, OkuriganaHelper.StripOkurigana(input));
+            Assert.Equal(expectedResult, OkuriganaHelpers.StripOkurigana(input));
         }
 
         [InlineData("踏み込む", "踏み込む")]
@@ -42,7 +42,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Theory]
         public void StripLeading(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, OkuriganaHelper.StripOkurigana(input, isLeading: true));
+            Assert.Equal(expectedResult, OkuriganaHelpers.StripOkurigana(input, isLeading: true));
         }
 
         [InlineData("おはら", false, "お,腹", "おはら")]
@@ -53,7 +53,7 @@ namespace WanaKanaNet.Tests.Helpers
         public void StripWithMatchKanji(string input, bool isLeading, string matchKanji, string expectedResult)
         {
             var kanji = matchKanji.Split(',').Select(s => s[0]);
-            Assert.Equal(expectedResult, OkuriganaHelper.StripOkurigana(input, isLeading, kanji.ToArray()));
+            Assert.Equal(expectedResult, OkuriganaHelpers.StripOkurigana(input, isLeading, kanji.ToArray()));
         }
     }
 }

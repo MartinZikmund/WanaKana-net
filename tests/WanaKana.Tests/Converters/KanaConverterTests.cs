@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WanaKanaNet.Converters;
-using WanaKanaNet.Enums;
 using WanaKanaNet.Tests.Helpers;
 using Xunit;
 
@@ -15,61 +11,61 @@ namespace WanaKanaNet.Tests.Converters
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => KanaConverter.ToKana(null!));
+            Assert.Throws<ArgumentNullException>(() => KanaConverters.ToKana(null!));
         }
 
         [Fact]
         public void EmptyResultIsEmpty()
         {
-            Assert.Empty(KanaConverter.ToKana(string.Empty));
+            Assert.Empty(KanaConverters.ToKana(string.Empty));
         }
 
         [Fact]
         public void LowercaseCharactersAreTransliteratedToHiragana()
         {
-            Assert.Equal("おなじ", KanaConverter.ToKana("onaji"));
+            Assert.Equal("おなじ", KanaConverters.ToKana("onaji"));
         }
 
         [Fact]
         public void LowercaseWithDoubleConsonantsAndDoubleVowelsAreTransliteratedToHiragana()
         {
-            Assert.Equal("ぶっつうじ", KanaConverter.ToKana("buttsuuji"));
+            Assert.Equal("ぶっつうじ", KanaConverters.ToKana("buttsuuji"));
         }
 
         [Fact]
         public void UppercaseCharactersAreTransliteratedToKatakana()
         {
-            Assert.Equal("オナジ", KanaConverter.ToKana("ONAJI"));
+            Assert.Equal("オナジ", KanaConverters.ToKana("ONAJI"));
         }
 
         [Fact]
         public void UppercaseWithDoubleConsonantsAndDoubleVowelsAreTransliteratedToKatakana()
         {
-            Assert.Equal("ブッツウジ", KanaConverter.ToKana("BUTTSUUJI"));
+            Assert.Equal("ブッツウジ", KanaConverters.ToKana("BUTTSUUJI"));
         }
 
         [Fact]
         public void MixedCaseReturnsHiragana()
         {
-            Assert.Equal("わにかに", KanaConverter.ToKana("WaniKani"));
+            Assert.Equal("わにかに", KanaConverters.ToKana("WaniKani"));
         }
 
         [Fact]
         public void NonRomajiPassedThrough()
         {
-            Assert.Equal("ワニカニ アいウえオ 鰐蟹 12345 @#$%", KanaConverter.ToKana("ワニカニ AiUeO 鰐蟹 12345 @#$%"));
+            Assert.Equal("ワニカニ アいウえオ 鰐蟹 12345 @#$%", KanaConverters.ToKana("ワニカニ AiUeO 鰐蟹 12345 @#$%"));
         }
 
         [Fact]
         public void MixedSyllables()
         {
-            Assert.Equal("座禅「ざぜん」スタイル", KanaConverter.ToKana("座禅‘zazen’スタイル"));
+            Assert.Equal("座禅「ざぜん」スタイル", KanaConverters.ToKana("座禅‘zazen’スタイル"));
         }
 
         [Fact]
         public void ConvertShortToLongDashes()
         {
-            Assert.Equal("ばつげーむ", KanaConverter.ToKana("batsuge-mu"));
+            Assert.Equal("ばつげーむ", KanaConverters.ToKana("batsuge-mu"));
         }
 
         [Fact]
@@ -77,7 +73,7 @@ namespace WanaKanaNet.Tests.Converters
         {
             var input = string.Join(string.Empty, ConversionTables.EnglishPunctuation.Append(' '));
             var expected = string.Join(string.Empty, ConversionTables.JapanesePunctuation.Append(' '));
-            Assert.Equal(expected, KanaConverter.ToKana(input));
+            Assert.Equal(expected, KanaConverters.ToKana(input));
         }
 
         [InlineData("n", "ん")]
@@ -86,7 +82,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void WithoutImeMode(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, KanaConverter.ToKana(input));
+            Assert.Equal(expectedResult, KanaConverters.ToKana(input));
         }
 
         [InlineData("n", "n")]
@@ -98,7 +94,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void WithImeMode(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, KanaConverter.ToKana(input, new WanaKanaOptions() { ImeMode = ImeMode.Enabled }));
+            Assert.Equal(expectedResult, KanaConverters.ToKana(input, new WanaKanaOptions() { ImeMode = ImeMode.Enabled }));
         }
 
         [InlineData("wi", "うぃ")]
@@ -106,7 +102,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void UseObsoleteKanaFalseByDefault(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, KanaConverter.ToKana(input));
+            Assert.Equal(expectedResult, KanaConverters.ToKana(input));
         }
 
         [InlineData("wi", "ゐ")]
@@ -116,7 +112,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void UsingObsoleteKana(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, KanaConverter.ToKana(input, new WanaKanaOptions() { UseObsoleteKana = true }));
+            Assert.Equal(expectedResult, KanaConverters.ToKana(input, new WanaKanaOptions() { UseObsoleteKana = true }));
         }
     }
 }

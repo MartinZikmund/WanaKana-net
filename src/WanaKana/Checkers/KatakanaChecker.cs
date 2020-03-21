@@ -16,7 +16,7 @@ namespace WanaKanaNet.Checkers
         public static bool IsKatakana(char character)
         {
             if (SpecialCharacterChecker.IsLongDash(character)) return true;
-            return CharacterBounds.KatakanaChars.Contains(character);
+            return CharacterRanges.KatakanaChars.Contains(character);
         }
     }
 }

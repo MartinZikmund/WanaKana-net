@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WanaKanaNet.Checkers;
 using Xunit;
 
 namespace WanaKanaNet.Tests.Checkers
@@ -13,13 +8,13 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => KanaChecker.IsKana(null));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.IsKana(null!));
         }
 
         [Fact]
         public void EmptyReturnsFalse()
         {
-            Assert.False(KanaChecker.IsKana(string.Empty));
+            Assert.False(WanaKana.IsKana(string.Empty));
         }
 
         [InlineData("あ", true)]
@@ -31,7 +26,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Theory]
         public void IsKanaResponseMatches(string input, bool expectedResult)
         {
-            Assert.Equal(expectedResult, KanaChecker.IsKana(input));
+            Assert.Equal(expectedResult, WanaKana.IsKana(input));
         }
     }
 }

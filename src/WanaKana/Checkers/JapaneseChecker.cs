@@ -26,6 +26,6 @@ namespace WanaKanaNet.Checkers
         }
 
         public static bool IsJapanese(char character) =>
-            CharacterBounds.JapaneseRanges.Any(range => range.Contains(character));
+            CharacterRanges.JapaneseRanges.Any(range => range.Contains(character));
     }
 }

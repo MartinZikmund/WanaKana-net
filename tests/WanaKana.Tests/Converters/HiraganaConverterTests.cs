@@ -8,18 +8,18 @@ using Xunit;
 
 namespace WanaKanaNet.Tests.Converters
 {
-    public class HiraganaConverterTests
+    public class WanaKanaTests
     {
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => HiraganaConverter.ToHiragana(null!));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.ToHiragana(null!));
         }
 
         [Fact]
         public void EmptyResultIsEmpty()
         {
-            Assert.Empty(HiraganaConverter.ToHiragana(string.Empty));
+            Assert.Empty(WanaKana.ToHiragana(string.Empty));
         }
 
         // https://en.wikipedia.org/wiki/Iroha
@@ -34,14 +34,14 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void IrohaConversion(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
+            Assert.Equal(expectedResult, WanaKana.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
         }
 
         [InlineData("NLTU", "んっ")]
         [Theory]
         public void ToHiraganaNltu(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
+            Assert.Equal(expectedResult, WanaKana.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
         }
 
         [InlineData("wi", "うぃ")]
@@ -49,7 +49,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void ToHiraganaNotUsingObsoleteKanaExplicit(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = false }), StringComparer.InvariantCulture);
+            Assert.Equal(expectedResult, WanaKana.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = false }), StringComparer.InvariantCulture);
         }
 
         [InlineData("wi", "ゐ")]
@@ -57,20 +57,20 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void ToHiraganaUsingObsoleteKana(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
+            Assert.Equal(expectedResult, WanaKana.ToHiragana(input, new WanaKanaOptions() { UseObsoleteKana = true }), StringComparer.InvariantCulture);
         }
 
         [Fact]
         public void ToHiraganaWithoutPassRomaji()
         {
-            var result = HiraganaConverter.ToHiragana("only カナ");
+            var result = WanaKana.ToHiragana("only カナ");
             Assert.Equal("おんly かな", result, StringComparer.InvariantCulture);
         }
 
         [Fact]
         public void ToHiraganaWithPassRomaji()
         {
-            var result = HiraganaConverter.ToHiragana("only カナ", new WanaKanaOptions() { PassRomaji = true });
+            var result = WanaKana.ToHiragana("only カナ", new WanaKanaOptions() { PassRomaji = true });
             Assert.Equal("only かな", result, StringComparer.InvariantCulture);
         }
 
@@ -79,13 +79,13 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void ToHiraganaKatakanaChoonpu(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaConverter.ToHiragana(input), StringComparer.InvariantCulture);
+            Assert.Equal(expectedResult, WanaKana.ToHiragana(input), StringComparer.InvariantCulture);
         }
 
         [Fact]
         public void ToHiraganaWithMixedInput()
         {
-            var result = HiraganaConverter.ToHiragana("#22 ２２漢字、toukyou, オオサカ");
+            var result = WanaKana.ToHiragana("#22 ２２漢字、toukyou, オオサカ");
             Assert.Equal("#22 ２２漢字、とうきょう、 おおさか", result, StringComparer.InvariantCulture);
         }
 
@@ -93,7 +93,7 @@ namespace WanaKanaNet.Tests.Converters
         [Fact]
         public void HiraganaToKatakanaNullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => HiraganaConverter.HiraganaToKatakana(null));
+            Assert.Throws<ArgumentNullException>(() => KanaConverters.HiraganaToKatakana(null));
         }
 
         [InlineData("あはべか", "アハベカ")]
@@ -101,7 +101,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void HiraganaToKatakanaSamples(string input, string expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaConverter.HiraganaToKatakana(input));
+            Assert.Equal(expectedResult, KanaConverters.HiraganaToKatakana(input));
         }
     }
 }

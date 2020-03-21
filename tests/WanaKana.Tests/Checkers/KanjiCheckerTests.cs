@@ -9,13 +9,13 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => KanjiChecker.IsKanji(null));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.IsKanji(null!));
         }
 
         [Fact]
         public void EmptyReturnsFalse()
         {
-            Assert.False(KanjiChecker.IsKanji(string.Empty));
+            Assert.False(WanaKana.IsKanji(string.Empty));
         }
 
         [InlineData("切腹", true)]
@@ -32,7 +32,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Theory]
         public void IsKanjiResponsesMatch(string input, bool expectedResult)
         {
-            Assert.Equal(expectedResult, KanjiChecker.IsKanji(input));
+            Assert.Equal(expectedResult, WanaKana.IsKanji(input));
         }
     }
 }

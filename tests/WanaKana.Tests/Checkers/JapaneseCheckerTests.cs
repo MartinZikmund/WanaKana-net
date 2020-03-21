@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using WanaKanaNet.Checkers;
 using Xunit;
 
 namespace WanaKanaNet.Tests.Checkers
@@ -10,13 +9,13 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => JapaneseChecker.IsJapanese(null));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.IsJapanese(null!));
         }
 
         [Fact]
         public void EmptyReturnsFalse()
         {
-            Assert.False(JapaneseChecker.IsJapanese(string.Empty));
+            Assert.False(WanaKana.IsJapanese(string.Empty));
         }
 
         [InlineData("泣き虫", true)] //泣き虫 is Japanese
@@ -36,20 +35,20 @@ namespace WanaKanaNet.Tests.Checkers
         [Theory]
         public void IsJapaneseResponsesMatch(string input, bool expectedResult)
         {
-            Assert.Equal(expectedResult, JapaneseChecker.IsJapanese(input));
+            Assert.Equal(expectedResult, WanaKana.IsJapanese(input));
         }
 
         [Fact]
         public void IsJapaneseAcceptsOptionalAllowedChars()
         {
-            var isJapanese = JapaneseChecker.IsJapanese("≪偽括弧≫", '[', '≪', '≫', ']');
+            var isJapanese = WanaKana.IsJapanese("≪偽括弧≫", '[', '≪', '≫', ']');
             Assert.True(isJapanese);
         }
 
         [Fact]
         public void IsJapaneseAcceptsOptionalAllowedCharsRegex()
         {
-            var isJapanese = JapaneseChecker.IsJapanese("≪偽括弧≫", new Regex("[≪≫]"));
+            var isJapanese = WanaKana.IsJapanese("≪偽括弧≫", new Regex("[≪≫]"));
             Assert.True(isJapanese);
         }
     }

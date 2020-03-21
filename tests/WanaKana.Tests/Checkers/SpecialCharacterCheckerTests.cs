@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WanaKanaNet.Characters;
+﻿using WanaKanaNet.Characters;
 using WanaKanaNet.Checkers;
 using Xunit;
 
@@ -26,7 +21,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsConsonantRecognizesConsonants()
         {
-            foreach (var consonant in CharacterBounds.Consonants)
+            foreach (var consonant in CharacterRanges.Consonants)
             {
                 Assert.True(SpecialCharacterChecker.IsConsonant(consonant));
             }
@@ -49,7 +44,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsVowelRecognizesVowels()
         {
-            foreach (var vowel in CharacterBounds.Vowels)
+            foreach (var vowel in CharacterRanges.Vowels)
             {
                 Assert.True(SpecialCharacterChecker.IsVowel(vowel));
             }
@@ -66,7 +61,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsEnglishPunctuationAllEnglishPunctuationsAreRecognized()
         {
-            foreach (var range in CharacterBounds.EnglishPunctuationRanges)
+            foreach (var range in CharacterRanges.EnglishPunctuationRanges)
             {
                 for (char character = range.Start; character <= range.End; character++)
                 {
@@ -78,7 +73,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsEnglishPunctuationAllJapanesePunctuationsAreInvalid()
         {
-            foreach (var range in CharacterBounds.JapanesePunctuationRanges)
+            foreach (var range in CharacterRanges.JapanesePunctuationRanges)
             {
                 for (char character = range.Start; character <= range.End; character++)
                 {
@@ -100,7 +95,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsJapanesePunctuationAllJapanesePunctuationsAreRecognized()
         {
-            foreach (var range in CharacterBounds.JapanesePunctuationRanges)
+            foreach (var range in CharacterRanges.JapanesePunctuationRanges)
             {
                 for (char character = range.Start; character <= range.End; character++)
                 {
@@ -112,7 +107,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void IsJapanesePunctuationAllEnglishPunctuationsAreInvalid()
         {
-            foreach (var range in CharacterBounds.EnglishPunctuationRanges)
+            foreach (var range in CharacterRanges.EnglishPunctuationRanges)
             {
                 for (char character = range.Start; character <= range.End; character++)
                 {

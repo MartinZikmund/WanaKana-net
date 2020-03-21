@@ -1,5 +1,4 @@
-﻿using System.Text;
-using WanaKanaNet.Characters;
+﻿using System;
 using WanaKanaNet.Checkers;
 
 namespace WanaKanaNet.Converters
@@ -10,7 +9,7 @@ namespace WanaKanaNet.Converters
         {
             if (input is null)
             {
-                throw new System.ArgumentNullException(nameof(input));
+                throw new ArgumentNullException(nameof(input));
             }
 
             options ??= new WanaKanaOptions();
@@ -19,52 +18,21 @@ namespace WanaKanaNet.Converters
 
             if (options.PassRomaji)
             {
-                return KatakanaConverter.KatakanaToHiragana(input);
+                return KanaConverters.KatakanaToHiragana(input);
             }
 
             if (MixedChecker.IsMixed(input))
             {
-                var convertedKatakana = KatakanaConverter.KatakanaToHiragana(input);
-                return KanaConverter.ToKana(convertedKatakana.ToLowerInvariant(), options);
+                var convertedKatakana = KanaConverters.KatakanaToHiragana(input);
+                return KanaConverters.ToKana(convertedKatakana.ToLowerInvariant(), options);
             }
 
             if (RomajiChecker.IsRomaji(input) || SpecialCharacterChecker.IsEnglishPunctuation(input[0]))
             {
-                return KanaConverter.ToKana(input.ToLowerInvariant(), options);
+                return KanaConverters.ToKana(input.ToLowerInvariant(), options);
             }
 
-            return KatakanaConverter.KatakanaToHiragana(input);
-        }
-
-        public static string HiraganaToKatakana(string input)
-        {
-            if (input is null)
-            {
-                throw new System.ArgumentNullException(nameof(input));
-            }
-
-            var builder = new StringBuilder();
-            foreach (var character in input)
-            {
-                // Short circuit to avoid incorrect codeshift for 'ー' and '・'
-                if (SpecialCharacterChecker.IsLongDash(character) || SpecialCharacterChecker.IsSlashDot(character))
-                {
-                    builder.Append(character);
-                }
-                else if (HiraganaChecker.IsHiragana(character))
-                {
-                    // Shift charcode.
-                    var katakanaCode = (character - CharacterBounds.HiraganaStart) + CharacterBounds.KatakanaStart;
-                    var katakanaCharacter = (char)katakanaCode;
-                    builder.Append(katakanaCharacter);
-                }
-                else
-                {
-                    // Pass non-hiragana chars through
-                    builder.Append(character);
-                }
-            }
-            return builder.ToString();
+            return KanaConverters.KatakanaToHiragana(input);
         }
     }
 }

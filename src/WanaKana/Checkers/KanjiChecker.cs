@@ -16,6 +16,6 @@ namespace WanaKanaNet.Checkers
             return input.All(IsKanji);
         }
 
-        public static bool IsKanji(char character) => CharacterBounds.KanjiRange.Contains(character);
+        public static bool IsKanji(char character) => CharacterRanges.KanjiRange.Contains(character);
     }
 }

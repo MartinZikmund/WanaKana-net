@@ -9,7 +9,12 @@ namespace WanaKanaNet.Helpers
     {
         public static Token[] Tokenize(string input, bool compact = false)
         {
-            if (string.IsNullOrEmpty(input))
+            if (input is null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            if (input == string.Empty)
             {
                 return Array.Empty<Token>();
             }

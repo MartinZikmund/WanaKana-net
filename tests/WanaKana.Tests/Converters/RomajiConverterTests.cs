@@ -15,13 +15,13 @@ namespace WanaKanaNet.Tests.Converters
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => RomajiConverter.ToRomaji(null!));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.ToRomaji(null!));
         }
 
         [Fact]
         public void EmptyResultIsEmpty()
         {
-            Assert.Empty(RomajiConverter.ToRomaji(string.Empty));
+            Assert.Empty(WanaKana.ToRomaji(string.Empty));
         }
 
         [InlineData("ワニカニ　ガ　スゴイ　ダ", "wanikani ga sugoi da")] //katakana
@@ -30,63 +30,63 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void ToRomajiBasicTests(string input, string expectedResult)
         {
-            var result = RomajiConverter.ToRomaji(input);
+            var result = WanaKana.ToRomaji(input);
             Assert.Equal(expectedResult, result);
         }
 
         [Fact]
         public void ToRomajiPunctuation()
         {
-            var result = RomajiConverter.ToRomaji(string.Join(string.Empty, ConversionTables.JapanesePunctuation));
+            var result = WanaKana.ToRomaji(string.Join(string.Empty, ConversionTables.JapanesePunctuation));
             Assert.Equal(string.Join(string.Empty, ConversionTables.EnglishPunctuation), result);
         }
 
         [Fact]
         public void ToRomajiWithUppercasing()
         {
-            var result = RomajiConverter.ToRomaji("ワニカニ", new WanaKanaOptions() { UppercaseKatakana = true });
+            var result = WanaKana.ToRomaji("ワニカニ", new WanaKanaOptions() { UppercaseKatakana = true });
             Assert.Equal("WANIKANI", result);
         }
 
         [Fact]
         public void ToRomajiWithUppercasingMixed()
         {
-            var result = RomajiConverter.ToRomaji("ワニカニ　が　すごい　だ", new WanaKanaOptions() { UppercaseKatakana = true });
+            var result = WanaKana.ToRomaji("ワニカニ　が　すごい　だ", new WanaKanaOptions() { UppercaseKatakana = true });
             Assert.Equal("WANIKANI ga sugoi da", result);
         }
 
         [Fact]
         public void ToRomajiLongDashToHyphen()
         {
-            var result = RomajiConverter.ToRomaji("ばつげーむ");
+            var result = WanaKana.ToRomaji("ばつげーむ");
             Assert.Equal("batsuge-mu", result);
         }
 
         [Fact]
         public void DashLikeKanji()
         {
-            var result = RomajiConverter.ToRomaji("一抹げーむ");
+            var result = WanaKana.ToRomaji("一抹げーむ");
             Assert.Equal("一抹ge-mu", result);
         }
         
         [Fact]
         public void ChonpuToLongVowel()
         {
-            var result = RomajiConverter.ToRomaji("スーパー");
+            var result = WanaKana.ToRomaji("スーパー");
             Assert.Equal("suupaa", result);
         }
 
         [Fact]
         public void KatakanaSpecialOu()
         {
-            var result = RomajiConverter.ToRomaji("缶コーヒー");
+            var result = WanaKana.ToRomaji("缶コーヒー");
             Assert.Equal("缶koohii", result);
         }
 
         [Fact]
         public void SpacesNotAdded()
         {
-            var result = RomajiConverter.ToRomaji("わにかにがすごいだ");
+            var result = WanaKana.ToRomaji("わにかにがすごいだ");
             Assert.NotEqual("wanikani ga sugoi da", result);
         }
 
@@ -96,7 +96,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void DoubleNsAndDoubleConsonants(string input, string expectedResult)
         {
-            var result = RomajiConverter.ToRomaji(input);
+            var result = WanaKana.ToRomaji(input);
             Assert.Equal(expectedResult, result);
         }
 
@@ -114,7 +114,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void SmallKana(string input, string expectedResult)
         {
-            var result = RomajiConverter.ToRomaji(input);
+            var result = WanaKana.ToRomaji(input);
             Assert.Equal(expectedResult, result);
         }
 
@@ -124,7 +124,7 @@ namespace WanaKanaNet.Tests.Converters
         [Theory]
         public void ApostrophesInAmbiguousConsonantVowelCombos(string input, string expectedResult)
         {
-            var result = RomajiConverter.ToRomaji(input);
+            var result = WanaKana.ToRomaji(input);
             Assert.Equal(expectedResult, result);
         }
     }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WanaKanaNet.Helpers;
 using Xunit;
 
@@ -13,13 +10,13 @@ namespace WanaKanaNet.Tests.Helpers
         [Fact]
         public void EmptyInput()
         {
-            Assert.Empty(Tokenizer.Tokenize(string.Empty));
+            Assert.Empty(WanaKana.Tokenize(string.Empty));
         }
 
         [Fact]
         public void NullInput()
         {
-            Assert.Empty(Tokenizer.Tokenize(null));
+            Assert.Throws<ArgumentNullException>(()=>WanaKana.Tokenize(null!));
         }
 
         [InlineData("ふふ", "ふふ")]
@@ -32,7 +29,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Theory]
         public void BasicTests(string input, string expectedResult)
         {
-            var result = Tokenizer.Tokenize(input);
+            var result = WanaKana.Tokenize(input);
             var split = expectedResult.Split(',');
             Assert.Equal(split, result.Select(t => t.Content));
         }
@@ -40,7 +37,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Fact]
         public void HandlesMixedInput()
         {
-            var result = Tokenizer.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！");
+            var result = WanaKana.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！");
             var expectedResult = new string[]
             {
                 "5",
@@ -64,7 +61,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Fact]
         public void CompactTrue()
         {
-            var result = Tokenizer.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！ لنذهب", true);
+            var result = WanaKana.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！ لنذهب", true);
             var expectedResult = new string[]
             {
                 "5",
@@ -83,7 +80,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Fact]
         public void DetailedCheck()
         {
-            var result = Tokenizer.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！ لنذهب");
+            var result = WanaKana.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！ لنذهب");
             var expectedResult = new Token[]
             {
                 new Token(tokenType: TokenTypes.EnglishNumber, content: "5"),
@@ -109,7 +106,7 @@ namespace WanaKanaNet.Tests.Helpers
         [Fact]
         public void CompactDetailedCheck()
         {
-            var result = Tokenizer.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！ لنذهب", true);
+            var result = WanaKana.Tokenize("5romaji here...!?漢字ひらがなカタ　カナ４「ＳＨＩＯ」。！ لنذهب", true);
             var expectedResult = new Token[]
             {
                 new Token(tokenType: TokenTypes.Other, content: "5"),

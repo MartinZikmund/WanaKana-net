@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WanaKanaNet.Enums;
 using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Characters
@@ -123,7 +118,7 @@ namespace WanaKanaNet.Characters
         {
             switch (options.Romanization)
             {
-                case RomanizationMap.Hepburn:
+                case RomanizationType.Hepburn:
                     return GetKanaToHepburnTree();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(options), "This type of romanization is not supported");

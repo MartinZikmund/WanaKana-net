@@ -27,6 +27,6 @@ namespace WanaKanaNet.Checkers
         }
 
         public static bool IsRomaji(char character) =>
-            CharacterBounds.RomajiRanges.Any(range => range.Contains(character));
+            CharacterRanges.RomajiRanges.Any(range => range.Contains(character));
     }
 }

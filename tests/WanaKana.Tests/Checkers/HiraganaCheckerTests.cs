@@ -1,5 +1,4 @@
 ﻿using System;
-using WanaKanaNet.Checkers;
 using Xunit;
 
 namespace WanaKanaNet.Tests.Checkers
@@ -9,13 +8,13 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => HiraganaChecker.IsHiragana(null));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.IsHiragana(null!));
         }
 
         [Fact]
         public void EmptyReturnsFalse()
         {
-            Assert.False(HiraganaChecker.IsHiragana(string.Empty));
+            Assert.False(WanaKana.IsHiragana(string.Empty));
         }
 
         [InlineData("あ", true)]
@@ -27,7 +26,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Theory]
         public void IsHiraganaResponsesMatch(string input, bool expectedResult)
         {
-            Assert.Equal(expectedResult, HiraganaChecker.IsHiragana(input));
+            Assert.Equal(expectedResult, WanaKana.IsHiragana(input));
         }
     }
 }

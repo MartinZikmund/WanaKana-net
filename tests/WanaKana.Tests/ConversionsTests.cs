@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
-using WanaKanaNet.Converters;
-using WanaKanaNet.Tests.Helpers;
+﻿using WanaKanaNet.Tests.Helpers;
 using Xunit;
 
 namespace WanaKanaNet.Tests
@@ -15,8 +10,8 @@ namespace WanaKanaNet.Tests
         {
             foreach (var (romaji, hiragana, katakana) in ConversionTables.RomajiToHiraganaKatakana)
             {
-                var lower = KanaConverter.ToKana(romaji);
-                var upper = KanaConverter.ToKana(romaji.ToUpperInvariant());
+                var lower = WanaKana.ToKana(romaji);
+                var upper = WanaKana.ToKana(romaji.ToUpperInvariant());
                 Assert.Equal(hiragana, lower);
                 Assert.Equal(katakana, upper);
             }
@@ -27,8 +22,8 @@ namespace WanaKanaNet.Tests
         {
             foreach (var (romaji, hiragana, katakana) in ConversionTables.RomajiToHiraganaKatakana)
             {
-                var lower = HiraganaConverter.ToHiragana(romaji);
-                var upper = HiraganaConverter.ToHiragana(romaji.ToUpperInvariant());
+                var lower = WanaKana.ToHiragana(romaji);
+                var upper = WanaKana.ToHiragana(romaji.ToUpperInvariant());
                 Assert.Equal(hiragana, lower);
                 Assert.Equal(hiragana, upper);
             }
@@ -39,8 +34,8 @@ namespace WanaKanaNet.Tests
         {
             foreach (var (romaji, hiragana, katakana) in ConversionTables.RomajiToHiraganaKatakana)
             {
-                var lower = KatakanaConverter.ToKatakana(romaji);
-                var upper = KatakanaConverter.ToKatakana(romaji.ToUpperInvariant());
+                var lower = WanaKana.ToKatakana(romaji);
+                var upper = WanaKana.ToKatakana(romaji.ToUpperInvariant());
                 Assert.Equal(katakana, lower);
                 Assert.Equal(katakana, upper);
             }
@@ -53,7 +48,7 @@ namespace WanaKanaNet.Tests
             {
                 if (!string.IsNullOrEmpty(hiragana))
                 {
-                    var result = RomajiConverter.ToRomaji(hiragana);
+                    var result = WanaKana.ToRomaji(hiragana);
                     Assert.Equal(romaji, result);
                 }
             }
@@ -66,7 +61,7 @@ namespace WanaKanaNet.Tests
             {
                 if (!string.IsNullOrEmpty(katakana))
                 {
-                    var result = RomajiConverter.ToRomaji(katakana);
+                    var result = WanaKana.ToRomaji(katakana);
                     Assert.Equal(romaji, result);
                 }
             }
@@ -78,7 +73,7 @@ namespace WanaKanaNet.Tests
         [Theory]
         public void ConvertingKatakanaToHiragana(string katakana, string hiragana)
         {
-            var result = HiraganaConverter.ToHiragana(katakana);
+            var result = WanaKana.ToHiragana(katakana);
             Assert.Equal(hiragana, result);
         }
 
@@ -88,7 +83,7 @@ namespace WanaKanaNet.Tests
         [Theory]
         public void ConvertingHiraganaToKatakana(string hiragana, string katakana)
         {
-            var result = KatakanaConverter.ToKatakana(hiragana);
+            var result = WanaKana.ToKatakana(hiragana);
             Assert.Equal(katakana, result);
         }
 
@@ -102,7 +97,7 @@ namespace WanaKanaNet.Tests
         [Theory]
         public void ConvertingLongVowelsToHiragana(string input, string expectedResult)
         {
-            var result = HiraganaConverter.ToHiragana(input);
+            var result = WanaKana.ToHiragana(input);
             Assert.Equal(expectedResult, result);
         }
 
@@ -112,7 +107,7 @@ namespace WanaKanaNet.Tests
         [Theory]
         public void ConvertingLongVowelsToKatakana(string input, string expectedResult)
         {
-            var result = KatakanaConverter.ToKatakana(input);
+            var result = WanaKana.ToKatakana(input);
             Assert.Equal(expectedResult, result);
         }
 
@@ -121,7 +116,7 @@ namespace WanaKanaNet.Tests
         [Theory]
         public void MixedSyllablesToHiragana(string input, bool passRomaji, string expectedResult)
         {
-            var result = HiraganaConverter.ToHiragana(input, new WanaKanaOptions() { PassRomaji = passRomaji });
+            var result = WanaKana.ToHiragana(input, new WanaKanaOptions() { PassRomaji = passRomaji });
             Assert.Equal(expectedResult, result);
         }
 
@@ -130,31 +125,31 @@ namespace WanaKanaNet.Tests
         [Theory]
         public void MixedSyllablesToKatakana(string input, bool passRomaji, string expectedResult)
         {
-            var result = KatakanaConverter.ToKatakana(input, new WanaKanaOptions() { PassRomaji = passRomaji });
+            var result = WanaKana.ToKatakana(input, new WanaKanaOptions() { PassRomaji = passRomaji });
             Assert.Equal(expectedResult, result);
         }
 
         [Fact]
         public void CaseSensitivityToHiragana()
         {
-            var result = HiraganaConverter.ToHiragana("aiueo");
-            var upperResult = HiraganaConverter.ToHiragana("AIUEO");
+            var result = WanaKana.ToHiragana("aiueo");
+            var upperResult = WanaKana.ToHiragana("AIUEO");
             Assert.Equal(upperResult, result);
         }
 
         [Fact]
         public void CaseSensitivityToKatakana()
         {
-            var result = KatakanaConverter.ToKatakana("aiueo");
-            var upperResult = KatakanaConverter.ToKatakana("AIUEO");
+            var result = WanaKana.ToKatakana("aiueo");
+            var upperResult = WanaKana.ToKatakana("AIUEO");
             Assert.Equal(upperResult, result);
         }
 
         [Fact]
         public void CaseSensitivityToKana()
         {
-            var result = KanaConverter.ToKana("aiueo");
-            var upperResult = KanaConverter.ToKana("AIUEO");
+            var result = WanaKana.ToKana("aiueo");
+            var upperResult = WanaKana.ToKana("AIUEO");
             Assert.NotEqual(upperResult, result);
         }
 
@@ -181,7 +176,7 @@ namespace WanaKanaNet.Tests
         [Theory]
         public void KanaEdgeCases(string input, string expectedResult)
         {
-            var result = KanaConverter.ToKana(input);
+            var result = WanaKana.ToKana(input);
             Assert.Equal(expectedResult, result);
         }
     }

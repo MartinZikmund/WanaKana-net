@@ -9,13 +9,13 @@ namespace WanaKanaNet.Tests.Checkers
         [Fact]
         public void NullThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => KatakanaChecker.IsKatakana(null));
+            Assert.Throws<ArgumentNullException>(() => WanaKana.IsKatakana(null));
         }
 
         [Fact]
         public void EmptyReturnsFalse()
         {
-            Assert.False(KatakanaChecker.IsKatakana(string.Empty));
+            Assert.False(WanaKana.IsKatakana(string.Empty));
         }
 
         [InlineData("アア", true)]
@@ -27,7 +27,7 @@ namespace WanaKanaNet.Tests.Checkers
         [Theory]
         public void IsKatakanaResponsesMatch(string input, bool expectedResult)
         {
-            Assert.Equal(expectedResult, KatakanaChecker.IsKatakana(input));
+            Assert.Equal(expectedResult, WanaKana.IsKatakana(input));
         }
     }
 }

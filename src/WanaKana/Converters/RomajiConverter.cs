@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading.Tasks;
 using WanaKanaNet.Characters;
 using WanaKanaNet.Checkers;
 using WanaKanaNet.Helpers;
@@ -17,7 +13,7 @@ namespace WanaKanaNet.Converters
         {
             if (input is null)
             {
-                throw new System.ArgumentNullException(nameof(input));
+                throw new ArgumentNullException(nameof(input));
             }
 
             options ??= new WanaKanaOptions();
@@ -31,7 +27,7 @@ namespace WanaKanaNet.Converters
             {
                 var (start, end, romaji) = token;
                 var makeUppercase = options.UppercaseKatakana && KatakanaChecker.IsKatakana(input.Substring(start, end - start));
-                builder.Append(makeUppercase ? romaji.ToUpperInvariant() : romaji);
+                builder.Append(makeUppercase ? romaji?.ToUpperInvariant() ?? string.Empty : romaji);
             }
             return builder.ToString();
         }
@@ -47,7 +43,7 @@ namespace WanaKanaNet.Converters
                 map.AddRange(options.CustomRomajiMapping);                
             }
 
-            return TrieHelpers.ApplyTrie(KatakanaConverter.KatakanaToHiragana(input, true), map, options.ImeMode == Enums.ImeMode.None);
+            return TrieHelpers.ApplyTrie(KanaConverters.KatakanaToHiragana(input, true), map, options.ImeMode == ImeMode.None);
         }
     }
 }

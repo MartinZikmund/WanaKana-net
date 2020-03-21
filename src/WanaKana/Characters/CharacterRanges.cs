@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace WanaKanaNet.Characters
 {
-    internal class CharacterBounds
+    internal class CharacterRanges
     {
         public const char LatinLowercaseStart = (char)0x61;
         public const char LatinLowercaseEnd = (char)0x7a;
@@ -87,6 +87,7 @@ namespace WanaKanaNet.Characters
                 .ToArray();
 
         public static readonly UnicodeRange ModernEnglish = new UnicodeRange((char)0x0000, (char)0x007f);
+
         public static readonly UnicodeRange[] HepburnMacronRanges = {
             new UnicodeRange((char)0x0100, (char)0x0101), // Ā ā
             new UnicodeRange((char)0x0112, (char)0x0113), // Ē ē

@@ -16,7 +16,7 @@ namespace WanaKanaNet.Checkers
         public static bool IsHiragana(char character)
         {
             if (SpecialCharacterChecker.IsLongDash(character)) return true;
-            return CharacterBounds.HiraganaChars.Contains(character);
+            return CharacterRanges.HiraganaChars.Contains(character);
         }
     }
 }
