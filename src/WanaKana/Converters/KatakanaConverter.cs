@@ -72,7 +72,15 @@ namespace WanaKanaNet.Converters
 
         public static string ToKatakana(string input, WanaKanaOptions? options = null)
         {
+            if (input is null)
+            {
+                throw new System.ArgumentNullException(nameof(input));
+            }
+
             options ??= new WanaKanaOptions();
+
+            if (input.Length == 0) return string.Empty;
+
             if (options.PassRomaji)
             {
                 return HiraganaConverter.HiraganaToKatakana(input);
