@@ -26,6 +26,11 @@ namespace WanaKanaNet.Mapping
 
         public IReadOnlyDictionary<char, TrieNode> Children => _children;
 
+        public TrieNode AddChild(char key, TrieNode node)
+        {
+            return (_children[key] = node);
+        }
+
         public TrieNode AddChild(char key, string? value = null)
         {
             return (_children[key] = new TrieNode(key, value, this));

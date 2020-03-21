@@ -9,7 +9,7 @@ namespace WanaKanaNet.Characters
 {
     internal static class KanaMapping
     {
-        public static void ApplyMapping(string input, IDictionary<string, string> mapping, bool convertEnding)
+        public static void ApplyMapping(string input, Trie mapping, bool convertEnding)
         {
             var root = mapping;
         }

@@ -20,7 +20,7 @@ namespace WanaKanaNet.Mapping
                     return null;
                 }
                 // if the next child node does not have a node value, set its node value to the input
-                node.Children[nextChar].Value = node.Value != null ? node.Value + nextChar : null;
+                //node.Children[nextChar].Value = node.Value != null ? node.Value + nextChar : null;
                 return node.Children[nextChar];
             }
 
@@ -39,7 +39,7 @@ namespace WanaKanaNet.Mapping
 
             SplitToken[] Parse(TrieNode tree, string remaining, int lastCursor, int currentCursor)
             {
-                if (!string.IsNullOrEmpty(remaining))
+                if (string.IsNullOrEmpty(remaining))
                 {
                     if (convertEnding || tree.Value != null)
                     {

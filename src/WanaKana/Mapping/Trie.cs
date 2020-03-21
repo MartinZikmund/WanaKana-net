@@ -7,13 +7,33 @@ namespace WanaKanaNet.Mapping
 {
     public class Trie
     {
+        public Trie()
+        {
+        }
+
+        public Trie(TrieNode root)
+        {
+            Root = root;
+        }
+
         public TrieNode Root { get; } = new TrieNode(default!, default!);
 
         public Trie Union(Trie second)
         {
+            void InDepth(TrieNode target, TrieNode source)
+            {
+                target.Value = source.Value;
+                foreach (var sourceChild in source.Children)
+                {
+                    if (!target.Children.TryGetValue(sourceChild.Key, out var targetChild))
+                    {
+                        targetChild = target.AddChild(sourceChild.Key);
+                    }
+                    InDepth(targetChild, sourceChild.Value);
+                }
+            }
             var trie = new Trie();
-            var root = trie.Root;
-
+            InDepth(trie.Root, Root);
             return trie;
         }
 
@@ -47,7 +67,7 @@ namespace WanaKanaNet.Mapping
                 }
                 else
                 {
-                    currentNode.AddChild(currentCharacter, i == key.Length - 1 ? value : null);
+                    currentNode = currentNode.AddChild(currentCharacter);
                 }
             }
             currentNode.Value = value;
@@ -55,7 +75,7 @@ namespace WanaKanaNet.Mapping
 
         internal void AddRange(IDictionary<string, string> customRomajiMapping)
         {
-            foreach(var entry in customRomajiMapping)
+            foreach (var entry in customRomajiMapping)
             {
                 this[entry.Key] = entry.Value;
             }
@@ -91,17 +111,51 @@ namespace WanaKanaNet.Mapping
 
         internal void InsertSubtrie(string prefix, Trie trie)
         {
-            
+            var node = GetNode(prefix, true);
+            foreach (var child in trie.Root.Children)
+            {
+                node!.AddChild(child.Key, child.Value);
+            }
         }
 
         internal Trie GetSubtrie(string key)
         {
-            return null;
+            return new Trie(GetNode(key, true)!);
         }
 
         internal Trie Clone()
         {
-            return null;
+            void InDepth(TrieNode target, TrieNode source)
+            {
+                target.Value = source.Value;
+                foreach (var sourceChild in source.Children)
+                {
+                    var targetNode = target.AddChild(sourceChild.Key);
+                    InDepth(targetNode, sourceChild.Value);
+                }
+            }
+            var trie = new Trie();
+            InDepth(trie.Root, Root);
+            return trie;
+        }
+
+        internal IEnumerable<KeyValuePair<string, string>> GetEntries()
+        {
+            IEnumerable<KeyValuePair<string, string>> InDepth(string prefix, TrieNode node)
+            {
+                if (node.Value != null)
+                {
+                    yield return new KeyValuePair<string, string>(prefix, node.Value);
+                }
+                foreach (var child in node.Children)
+                {
+                    foreach (var result in InDepth(prefix + child.Key, child.Value))
+                    {
+                        yield return result;
+                    }
+                }
+            }
+            return InDepth(string.Empty, Root);
         }
     }
 }

@@ -165,14 +165,17 @@ namespace WanaKanaNet.Characters
         {
             string[] GetAlternatives(string input)
             {
+                var results = new List<string>();
                 foreach (var alias in Aliases.Union(new[] { new KeyValuePair<string, string>("c", "k") }))
                 {
-                    //        ['l', 'x'].forEach((prefix) => {
-                    //    const altParentTree = subtreeOf(prefix + allExceptLast(altRoma));
-                    //    altParentTree[last(altRoma)] = subtreeOf(prefix + kunreiRoma);
-                    //});
+                    var alt = alias.Key;
+                    var roma = alias.Value;
+                    if (input.StartsWith(roma))
+                    {
+                        results.Add(input.Replace(roma, alt));
+                    }
                 }
-                throw new NotImplementedException();
+                return results.ToArray();
             }
 
             var kanaTree = Trie.FromDictionary(BasicKunrei);
@@ -260,7 +263,13 @@ namespace WanaKanaNet.Characters
 
             Trie AddTsu(Trie tree)
             {
-                throw new NotImplementedException();
+                var tsuTrie = new Trie();
+                foreach (var entry in tree.GetEntries())
+                {
+                    // we have reached the bottom of this branch
+                    tsuTrie[entry.Key] = $"っ{entry.Value}";
+                }
+                return tsuTrie;
             }
 
             foreach (var consonant in Consonants.Keys.Union(new[] { 'c', 'y', 'w', 'j' }))
@@ -270,6 +279,18 @@ namespace WanaKanaNet.Characters
             }
 
             return kanaTree;
+        }
+
+        internal static void ApplyImeModeMap(Trie trie)
+        {
+            // in IME mode, we do not want to convert single ns            
+            trie["nn"] = "ん";
+            trie["n "] = "ん";
+        }
+
+        internal static void ApplyObsoleteKanaMap(Trie trie)
+        {
+            trie.AddRange(new Dictionary<string, string>() { { "wi", "ゐ" }, { "we", "ゑ" } });
         }
     }
 }

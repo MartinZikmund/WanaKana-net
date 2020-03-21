@@ -34,7 +34,7 @@ namespace WanaKanaNet.Characters
           {"ゔぁ","va"},{"ゔぃ","vi"},{"ゔ","vu"},{"ゔぇ","ve"},{"ゔぉ","vo"},
         };
 
-        private readonly IDictionary<char, char> SpecialSymbols = new Dictionary<char, char>
+        private static readonly IDictionary<char, char> SpecialSymbols = new Dictionary<char, char>
         {
             {'。','.'},
             {'、',','},
@@ -200,22 +200,15 @@ namespace WanaKanaNet.Characters
 
         private static Trie ResolveTsu(Trie trie)
         {
-            return Object.entries(tree).reduce((tsuTree, [key, value]) => {
-                if (!key)
-                {
-                    // we have reached the bottom of this branch
-                    var consonant = value[0];
-                    tsuTree[key] = SokuonWhitelist.ContainsKey(consonant)
-                      ? SokuonWhitelist[consonant] + value
-                      : value;
-                }
-                else
-                {
-                    // more subtrees
-                    tsuTree[key] = resolveTsu(value);
-                }
-                return tsuTree;
-            }, { });
+            var tsuTrie = new Trie();
+            foreach (var entry in trie.GetEntries())
+            {
+                var consonant = entry.Value[0];
+                tsuTrie[entry.Key] = SokuonWhitelist.ContainsKey(consonant)
+                      ? SokuonWhitelist[consonant] + entry.Value
+                      : entry.Value;
+            }
+            return tsuTrie;
         }
     }
 }
