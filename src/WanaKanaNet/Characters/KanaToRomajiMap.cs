@@ -4,7 +4,7 @@ using WanaKanaNet.Mapping;
 
 namespace WanaKanaNet.Characters
 {
-    public class KanaToRomajiMap
+    internal static class KanaToRomajiMap
     {
         private static Trie? _kanaToHepburnMap = null;
 

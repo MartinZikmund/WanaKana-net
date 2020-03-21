@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace WanaKanaNet.Characters
 {
-    internal class CharacterRanges
+    internal static class CharacterRanges
     {
         public const char LatinLowercaseStart = (char)0x61;
         public const char LatinLowercaseEnd = (char)0x7a;

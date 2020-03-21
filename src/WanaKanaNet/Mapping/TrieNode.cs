@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WanaKanaNet.Mapping
 {
-    public class TrieNode
+    internal class TrieNode
     {
         private readonly Dictionary<char, TrieNode> _children =
             new Dictionary<char, TrieNode>();

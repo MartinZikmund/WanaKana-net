@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WanaKanaNet.Mapping
 {
-    public class Trie
+    internal class Trie
     {
         public Trie()
         {

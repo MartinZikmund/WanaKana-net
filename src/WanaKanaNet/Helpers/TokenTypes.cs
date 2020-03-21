@@ -1,6 +1,6 @@
 ﻿namespace WanaKanaNet.Helpers
 {
-    public static class TokenTypes
+    internal static class TokenTypes
     {
         public const string English = "en";
         public const string Japanese = "ja";
