@@ -15,7 +15,14 @@ namespace WanaKanaNet.Converters
     {
         public static string ToRomaji(string input, WanaKanaOptions? options = null)
         {
+            if (input is null)
+            {
+                throw new System.ArgumentNullException(nameof(input));
+            }
+
             options ??= new WanaKanaOptions();
+
+            if (input.Length == 0) return string.Empty;
 
             // just throw away the substring index information and just concatenate all the kana
             var romajiTokens = SplitIntoRomaji(input, options);
