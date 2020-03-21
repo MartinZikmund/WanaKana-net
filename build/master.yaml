@@ -1,0 +1,41 @@
+trigger:
+  branches:
+    include:
+    - master
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: "Build"
+  inputs:
+    command: 'build'
+    configuration: 'Release'
+    projects: '**/*.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Test'
+  inputs:
+    command: 'test'
+    projects: '**/*.Tests.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Pack'
+  inputs:
+    command: 'pack'    
+    packagesToPack: 'src/WanaKanaNet/WanaKanaNet.csproj'
+    nobuild: true
+    includesymbols: true    
+    versioningScheme: 'off'
+- task: NuGetCommand@2
+  displayName: "Push to NuGet.org"
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.snupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'NuGet.org'
+- task: PublishBuildArtifacts@1
+  displayName: "Publish artifacts"
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
