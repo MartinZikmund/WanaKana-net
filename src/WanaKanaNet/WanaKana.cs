@@ -5,6 +5,9 @@ using WanaKanaNet.Helpers;
 
 namespace WanaKanaNet
 {
+    /// <summary>
+    /// Contains all checkers and converters provided by WanaKana.
+    /// </summary>
     public static class WanaKana
     {
         /// <summary>

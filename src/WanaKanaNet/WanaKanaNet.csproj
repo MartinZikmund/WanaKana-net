@@ -23,7 +23,4 @@
   <ItemGroup>
     <None Include="images/wanikani.png" Pack="true" PackagePath="" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
 </Project>
