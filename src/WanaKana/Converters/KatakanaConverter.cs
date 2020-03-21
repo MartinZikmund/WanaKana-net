@@ -50,7 +50,10 @@ namespace WanaKanaNet.Converters
                     {
                         builder.Append('お');
                     }
-                    builder.Append(_longVowels[romaji]);
+                    else
+                    {
+                        builder.Append(_longVowels[romaji]);
+                    }
                 }
                 else if (!SpecialCharacterChecker.IsLongDash(character) && KatakanaChecker.IsKatakana(character))
                 {

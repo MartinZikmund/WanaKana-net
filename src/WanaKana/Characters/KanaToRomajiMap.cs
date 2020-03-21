@@ -181,7 +181,7 @@ namespace WanaKanaNet.Characters
 
             foreach (var kana in AmbiguousVowels)
             {
-                romajiTree[$"ん${kana}"] = $"n'{romajiTree[kana.ToString()]}";
+                romajiTree[$"ん{kana}"] = $"n'{romajiTree[kana.ToString()]}";
             }
 
             // NOTE: could be re-enabled with an option?
